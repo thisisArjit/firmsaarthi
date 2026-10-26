@@ -1,0 +1,24 @@
+'use client';
+import { workspaceFetch as fetch } from '@/lib/workspace-sync';
+import { useEffect, useState, type FormEvent } from 'react';
+import { Truck, LockKeyhole } from 'lucide-react';
+export default function Login(){
+  const [mode,setMode]=useState<'login'|'signup'>('login'),[email,setEmail]=useState(''),[password,setPassword]=useState(''),[confirmation,setConfirmation]=useState(''),[businessName,setBusinessName]=useState(''),[busy,setBusy]=useState(false),[error,setError]=useState(''),[googleEnabled,setGoogleEnabled]=useState(false);
+  useEffect(()=>{const code=new URLSearchParams(window.location.search).get('auth');const messages:Record<string,string>={'link-required':'Sign in with your existing password, then open My account to link Google.','signup-required':'No linked account found. Create an account, or sign in with your password to link Google.','google-failed':'Google sign-in was not completed. Please try again.'};if(code)setError(messages[code]||messages['google-failed']);fetch('/api/auth').then(r=>r.ok?r.json() as Promise<{googleEnabled:boolean}>:null).then(v=>setGoogleEnabled(!!v?.googleEnabled)).catch(()=>{});},[]);
+  async function submit(event:FormEvent){event.preventDefault();if(mode==='signup'&&password!==confirmation){setError('Passwords do not match.');return;}setBusy(true);setError('');try{
+    const response=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:mode,email,password,businessName})});
+    const result=await response.json() as {error?:string};if(!response.ok)throw new Error(result.error||'Unable to sign in.');
+    setPassword('');setConfirmation('');window.location.replace('/');
+  }catch(e){setError((e as Error).message);}finally{setBusy(false);}}
+  async function google(){if(mode==='signup'&&!businessName.trim()){setError('Enter your business name first.');return;}setBusy(true);setError('');try{const r=await fetch('/api/auth/google/start',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({intent:mode,businessName})}),v=await r.json() as {error?:string;url:string};if(!r.ok)throw new Error(v.error);window.location.assign(v.url);}catch(e){setError((e as Error).message);setBusy(false);}}
+  function switchMode(){setMode(mode==='login'?'signup':'login');setPassword('');setConfirmation('');setError('');}
+  return <main className="login-page"><section className="login-card"><div className="login-brand"><span className="brand-icon"><Truck size={26}/></span><div><strong>Logistrace</strong><small>TRANSPORT DESK</small></div></div><h1>{mode==='login'?'Sign in':'Create account'}</h1><p className="help">{mode==='login'?'Sign in to your transport workspace.':'Create a separate workspace for your transport business.'}</p><form onSubmit={submit}>
+    {mode==='signup'&&<label className="field"><span>Business name</span><input name="organization" autoComplete="organization" value={businessName} onChange={e=>setBusinessName(e.target.value)} required maxLength={150}/></label>}
+    <label className="field"><span>Email address</span><input type="email" name="email" autoComplete="username" value={email} onChange={e=>setEmail(e.target.value)} required maxLength={254}/></label><label className="field"><span>{mode==='signup'?'Password (12–128 characters)':'Password'}</span><input type="password" name="password" autoComplete={mode==='login'?'current-password':'new-password'} value={password} onChange={e=>setPassword(e.target.value)} required minLength={mode==='signup'?12:undefined} maxLength={mode==='signup'?128:1024}/></label>
+    {mode==='signup'&&<label className="field"><span>Confirm password</span><input type="password" name="confirmation" autoComplete="new-password" value={confirmation} onChange={e=>setConfirmation(e.target.value)} required minLength={12} maxLength={128}/></label>}
+    {error&&<p className="alert error" role="alert">{error}</p>}<button className="primary" disabled={busy}><LockKeyhole size={16}/>{busy?'Please wait…':mode==='login'?'Sign in':'Create account'}</button></form>
+    {googleEnabled&&<><div className="login-divider">or</div><button className="google-button" disabled={busy} onClick={google}>Continue with Google</button></>}
+    <p className="help login-note">{mode==='login'?'New to Logistrace?':'Already have an account?'} <button className="text-link login-switch" disabled={busy} onClick={switchMode}>{mode==='login'?'Create account':'Sign in'}</button></p>
+    {mode==='login'?<><p className="help">Forgot your password? Contact your workspace owner to reset it.</p><a className="text-link" href="/account/owner" target="_top">Recover owner access</a></>:<p className="help">Joining an existing team? Ask the workspace owner to create your account.</p>}
+    </section><p className="login-footer">A private workspace for your transport business.</p></main>;
+}

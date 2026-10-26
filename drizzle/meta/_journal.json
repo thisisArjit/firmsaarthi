@@ -1,0 +1,160 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1792863342097,
+      "tag": "0000_wet_shaman",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1792866181423,
+      "tag": "0001_aberrant_captain_universe",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1792866289410,
+      "tag": "0002_mature_joseph",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1792869216952,
+      "tag": "0003_brief_venus",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1792875255973,
+      "tag": "0004_greedy_naoko",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1792875441931,
+      "tag": "0005_fast_living_lightning",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1792875939827,
+      "tag": "0006_heavy_silver_centurion",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1792875989596,
+      "tag": "0007_spooky_tattoo",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "6",
+      "when": 1792876842974,
+      "tag": "0008_boring_hellion",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "6",
+      "when": 1792876912461,
+      "tag": "0009_natural_bloodstorm",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "6",
+      "when": 1792877466945,
+      "tag": "0010_tiny_mantis",
+      "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "6",
+      "when": 1792878553429,
+      "tag": "0011_third_toad",
+      "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "6",
+      "when": 1792879380695,
+      "tag": "0012_light_marrow",
+      "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "6",
+      "when": 1792911192842,
+      "tag": "0013_short_lifeguard",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "6",
+      "when": 1792917290849,
+      "tag": "0014_wooden_lethal_legion",
+      "breakpoints": true
+    },
+    {
+      "idx": 15,
+      "version": "6",
+      "when": 1792959054834,
+      "tag": "0015_tearful_cardiac",
+      "breakpoints": true
+    },
+    {
+      "idx": 16,
+      "version": "6",
+      "when": 1792960179170,
+      "tag": "0016_slim_menace",
+      "breakpoints": true
+    },
+    {
+      "idx": 17,
+      "version": "6",
+      "when": 1792979152104,
+      "tag": "0017_bouncy_slyde",
+      "breakpoints": true
+    },
+    {
+      "idx": 18,
+      "version": "6",
+      "when": 1792991197500,
+      "tag": "0018_high_golden_guardian",
+      "breakpoints": true
+    },
+    {
+      "idx": 19,
+      "version": "6",
+      "when": 1792992913059,
+      "tag": "0019_faithful_roland_deschain",
+      "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "6",
+      "when": 1792993214804,
+      "tag": "0020_overconfident_lake",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "6",
+      "when": 1792997487573,
+      "tag": "0021_even_lockjaw",
+      "breakpoints": true
+    }
+  ]
+}
