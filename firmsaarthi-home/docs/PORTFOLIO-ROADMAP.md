@@ -2,6 +2,8 @@
 
 Owner direction: 28 October 2026. Review strong products and build useful business solutions every six hours. Existing automation `build-logistrace-end-to-end` was updated in place to this cadence; no duplicate competing builder. Inventory is the next new offering, targeting inventory.firmsaarthi.com after implementation and validation. It is not live yet.
 
+Operational identity: firmsaarthi@gmail.com for new business operations and public support/activation. Read OPERATIONS.md before any account or provider setup. Existing service ownership and platform access require a separate verified migration.
+
 ## Current portfolio
 
 | Offering | State | Source | Public address |
