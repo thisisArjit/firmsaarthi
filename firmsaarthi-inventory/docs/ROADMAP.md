@@ -20,3 +20,6 @@ I2 purchasing/partial receiving/returns with source order links and no duplicate
 
 ## Migration checkpoint — 28 October 2026
 Canonical numbered initial migration and atomic local version/checksum runner implemented;21 tests pass. See MIGRATIONS.md. No hosted execution or public release. Next highest priority remains deliberate Inventory-only auth and a complete Items/Warehouses/Stock/History API/UI; then one isolated private Site and same-source hosted matrix. No new product beyond Inventory.
+
+## Identity/API checkpoint — 29 October 2026
+Native Sites scoped-identity mapping and stock Request/Response handler implemented internally;25 local tests pass. No raw client identity headers/email/Transport cookies accepted; membership must already exist and multiple memberships deny until reviewed selection is implemented. Next wire the native server helper and deliberate separate Inventory workspace creation into the supported starter, build Items/Warehouses/Stock/History UI, then private isolated hosted acceptance. User-facing login options require supported capability confirmation. Do not scaffold custom OAuth/session infrastructure or issue real access from test helpers.
