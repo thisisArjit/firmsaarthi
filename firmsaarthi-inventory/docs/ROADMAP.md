@@ -17,3 +17,6 @@ Cycle update: runtime-neutral validation and asynchronous D1-binding service are
 ## Later complete workflows
 
 I2 purchasing/partial receiving/returns with source order links and no duplicated receipt. I3 sales/reservation/available quantities/fulfilment/returns. I4 balanced transfers and physical counts/reorder. I5 serial/batch/expiry/barcodes. I6 explicit valuation/import/report policy. I7 consented integrations and tenant mapping. No financial/tax posting inferred from stock.
+
+## Migration checkpoint — 28 October 2026
+Canonical numbered initial migration and atomic local version/checksum runner implemented;21 tests pass. See MIGRATIONS.md. No hosted execution or public release. Next highest priority remains deliberate Inventory-only auth and a complete Items/Warehouses/Stock/History API/UI; then one isolated private Site and same-source hosted matrix. No new product beyond Inventory.

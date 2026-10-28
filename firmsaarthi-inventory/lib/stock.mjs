@@ -1,9 +1,9 @@
 import {DatabaseSync} from 'node:sqlite';
-import {readFileSync} from 'node:fs';
+import {migrateReference} from './migrations.mjs';
 import {randomUUID} from 'node:crypto';
 import {units,text,quantity,movementInput} from './domain.mjs';
 export {units,quantity,displayQuantity} from './domain.mjs';
-export function openStock(path=':memory:'){const db=new DatabaseSync(path);db.exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;');db.exec(readFileSync(new URL('./schema.sql',import.meta.url),'utf8'));return db;}
+export function openStock(path=':memory:'){const db=new DatabaseSync(path);try{db.exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;');migrateReference(db);return db;}catch(error){db.close();throw error;}}
 // Bootstrap is for a future authenticated provisioning boundary, never an HTTP action accepting caller-selected identities.
 export function provision(db,{orgId,userId,name}){text(orgId,'workspace ID');text(userId,'user ID');name=text(name,'business name');db.exec('BEGIN IMMEDIATE');try{db.prepare('INSERT INTO workspaces VALUES(?,?)').run(orgId,name);db.prepare("INSERT INTO members VALUES(?,?,'owner')").run(orgId,userId);db.exec('COMMIT');}catch(e){db.exec('ROLLBACK');throw e;}}
 export class Stock{
