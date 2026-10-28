@@ -1,0 +1,11 @@
+{
+ "name":"FirmSaarthi Transport",
+ "publisherName":"FirmSaarthi",
+ "publisherAccount":"firmsaarthi@gmail.com",
+ "supportEmail":"firmsaarthi@gmail.com",
+ "applicationId":"com.firmsaarthi.transport",
+ "productionOrigin":"https://transport.firmsaarthi.com",
+ "stagingOrigin":"https://firmsaarthi-transport-staging.arjit-tiwari-ece14.chatgpt.site",
+ "distribution":"internal-test",
+ "playPublicationApproved":false
+}

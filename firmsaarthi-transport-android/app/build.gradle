@@ -1,0 +1,40 @@
+plugins { id 'com.android.application' }
+android {
+ namespace 'com.firmsaarthi.transport'
+ compileSdk 36
+ defaultConfig {
+  applicationId 'com.firmsaarthi.transport'
+  minSdk 26
+  targetSdk 36
+  versionCode 1
+  versionName '0.1.0'
+ }
+ buildFeatures { buildConfig true }
+ flavorDimensions += 'environment'
+ productFlavors {
+  production {
+   dimension 'environment'
+   buildConfigField 'String', 'START_URL', '"https://transport.firmsaarthi.com/"'
+   buildConfigField 'String', 'HOST', '"transport.firmsaarthi.com"'
+   manifestPlaceholders = [appHost:'transport.firmsaarthi.com', startUrl:'https://transport.firmsaarthi.com/']
+   resValue 'string','app_name','FirmSaarthi Transport'
+  }
+  staging {
+   dimension 'environment'
+   applicationIdSuffix '.staging'
+   buildConfigField 'String', 'START_URL', '"https://firmsaarthi-transport-staging.arjit-tiwari-ece14.chatgpt.site/"'
+   buildConfigField 'String', 'HOST', '"firmsaarthi-transport-staging.arjit-tiwari-ece14.chatgpt.site"'
+   manifestPlaceholders = [appHost:'firmsaarthi-transport-staging.arjit-tiwari-ece14.chatgpt.site', startUrl:'https://firmsaarthi-transport-staging.arjit-tiwari-ece14.chatgpt.site/']
+   resValue 'string','app_name','FirmSaarthi Test'
+  }
+ }
+ buildTypes {
+  debug { applicationIdSuffix '.debug'; versionNameSuffix '-test' }
+  release { minifyEnabled false }
+ }
+ compileOptions { sourceCompatibility JavaVersion.VERSION_17; targetCompatibility JavaVersion.VERSION_17 }
+}
+dependencies {
+ implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.7.4'
+ testImplementation 'junit:junit:4.13.2'
+}
