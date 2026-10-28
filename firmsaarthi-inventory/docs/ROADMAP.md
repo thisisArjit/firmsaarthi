@@ -4,9 +4,11 @@
 
 Local I1 stock core implemented and9 actual Node tests pass. No hosted app, UI, signup or API exists. No published release or domain route. No existing inventory Sites project was found in the current owner's complete six-item Site listing; checked before starting this separate checkout.
 
+Cycle update: runtime-neutral validation and asynchronous D1-binding service are implemented locally;16 tests pass. Adjustment version checks now also run inside the SQL insert trigger, closing the read/write race that a remote adapter would otherwise introduce. Actual D1 staging, versioned migrations, authenticated product boundary and UI remain unfinished. The original9-test observation above is historical.
+
 ## Finish I1 before broadening
 
-1. Extract runtime-neutral quantity/domain validation; implement supported Sites D1 service adapter retaining database-level nonnegative, precision, role, tenant, immutable/reversal and idempotency constraints. Validate concurrent writes against actual D1 on staging; local SQLite concurrency is supporting evidence only.
+1. Domain extraction and D1 service adapter are locally implemented. Next add versioned fresh-schema deployment migrations and validate the actual D1 runtime on private staging, including synchronized issues, duplicate intents and stale adjustments. Local SQLite contract/concurrency tests are supporting evidence only.
 2. Design product authentication with stable identities and memberships. No Transport identity auto-access, no email-as-tenant authorization, no unauthenticated provisioning, no public actor/org request arguments. Select free supported provider flow, keep credentials separate and obtain any required action-time approvals.
 3. Add service/API/UI: owner creates SKU/base unit/warehouse; owner or operator receives/issues; owner reviews reasoned delta adjustment and explicit reversal; viewer sees balance/history. Preserve unfinished forms on refresh and expose conflicts with current balance/version. Scoped history and source actions explain every balance. Do not add user-selected historical posting dates in I1.
 4. Provision one private Inventory staging Site with isolated storage only after source/manifest setup; preserve all current product projects. Implement an explicit same-source release fingerprint/gate, then desktop/phone hosted E2E for happy paths, duplicate/concurrent/stale inputs, tenant/role/privacy boundaries, quantity sum/invariants and recovery. Never report this local harness as hosted tests.

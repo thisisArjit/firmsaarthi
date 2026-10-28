@@ -1,10 +1,8 @@
 import {DatabaseSync} from 'node:sqlite';
 import {readFileSync} from 'node:fs';
 import {randomUUID} from 'node:crypto';
-export const units=Object.freeze({each:0,box:0,kg:3,litre:3,metre:3});
-const text=(value,label,max=200)=>{if(typeof value!=='string'||!value.trim()||value.trim().length>max)throw Error(`Invalid ${label}.`);return value.trim();};
-export function quantity(value,unit){if(!Object.hasOwn(units,unit)||typeof value!=='string'||!/^\d{1,7}(?:\.\d{1,3})?$/.test(value))throw Error('Enter a decimal quantity without commas or exponents.');const [a,b='']=value.split('.');if(b.length>units[unit])throw Error('Quantity exceeds base-unit precision.');const n=BigInt(a)*1000000n+BigInt(b.padEnd(6,'0'));if(n<=0n||n>9000000000000n)throw Error('Quantity is outside the allowed range.');return Number(n);}
-export function displayQuantity(n){const v=BigInt(n),sign=v<0n?'-':'',a=v<0n?-v:v;return sign+(a/1000000n).toString()+(a%1000000n?'.'+(a%1000000n).toString().padStart(6,'0').replace(/0+$/,''):'');}
+import {units,text,quantity,movementInput} from './domain.mjs';
+export {units,quantity,displayQuantity} from './domain.mjs';
 export function openStock(path=':memory:'){const db=new DatabaseSync(path);db.exec('PRAGMA foreign_keys=ON; PRAGMA busy_timeout=5000;');db.exec(readFileSync(new URL('./schema.sql',import.meta.url),'utf8'));return db;}
 // Bootstrap is for a future authenticated provisioning boundary, never an HTTP action accepting caller-selected identities.
 export function provision(db,{orgId,userId,name}){text(orgId,'workspace ID');text(userId,'user ID');name=text(name,'business name');db.exec('BEGIN IMMEDIATE');try{db.prepare('INSERT INTO workspaces VALUES(?,?)').run(orgId,name);db.prepare("INSERT INTO members VALUES(?,?,'owner')").run(orgId,userId);db.exec('COMMIT');}catch(e){db.exec('ROLLBACK');throw e;}}
@@ -15,9 +13,7 @@ export class Stock{
  item({sku,name,unit}){return this.atomic(()=>{this.access(true);sku=text(sku,'SKU',60).toUpperCase();name=text(name,'item name');if(!Object.hasOwn(units,unit))throw Error('Choose a supported base unit.');const id=randomUUID();this.db.prepare('INSERT INTO items(id,org_id,sku,name,unit) VALUES(?,?,?,?,?)').run(id,this.org,sku,name,unit);return {id,sku,name,unit};});}
  warehouse({code,name}){return this.atomic(()=>{this.access(true);code=text(code,'warehouse code',40).toUpperCase();name=text(name,'warehouse name');const id=randomUUID();this.db.prepare('INSERT INTO warehouses(id,org_id,code,name) VALUES(?,?,?,?)').run(id,this.org,code,name);return {id,code,name};});}
  post(input){return this.atomic(()=>{
-  const role=this.access(),kind=text(input.kind,'movement kind'),requestId=text(input.requestId,'request ID',100),reason=text(input.reason,'reason',500);if(!/^[A-Za-z0-9_-]{8,100}$/.test(requestId))throw Error('Invalid request ID.');
-  if(!['receive','issue','adjust_in','adjust_out','reverse'].includes(kind)||role==='viewer'||role==='operator'&&!['receive','issue'].includes(kind))throw Error('Stock permission required.');
-  const payload=JSON.stringify({kind,itemId:input.itemId??null,warehouseId:input.warehouseId??null,quantity:input.quantity??null,reverses:input.reverses??null,expectedVersion:input.expectedVersion??null,reason});
+  const {kind,requestId,reason,payload}=movementInput(input,this.access());
   const replay=this.db.prepare('SELECT * FROM movements WHERE org_id=? AND request_id=?').get(this.org,requestId);if(replay){if(replay.payload!==payload||replay.actor!==this.user)throw Error('Request ID already used for another movement.');return {...replay,replayed:true};}
   let itemId,warehouseId,delta,reverses=null;
   if(kind==='reverse'){const original=this.db.prepare("SELECT * FROM movements WHERE org_id=? AND id=? AND kind<>'reverse'").get(this.org,text(input.reverses,'movement ID'));if(!original)throw Error('Movement unavailable.');itemId=original.item_id;warehouseId=original.warehouse_id;delta=-original.delta;reverses=original.id;}
@@ -25,7 +21,7 @@ export class Stock{
   const balance=this.db.prepare('SELECT * FROM balances WHERE org_id=? AND item_id=? AND warehouse_id=?').get(this.org,itemId,warehouseId)||{quantity:0,version:0};
   if(kind.startsWith('adjust')&&(!Number.isSafeInteger(input.expectedVersion)||input.expectedVersion!==balance.version))throw Error('Stock changed. Review the latest balance before adjusting.');
   if(balance.quantity+delta<0)throw Error('Insufficient stock.');if(balance.quantity+delta>9000000000000)throw Error('Stock exceeds the allowed range.');
-  const id=randomUUID(),at=new Date().toISOString();this.db.prepare('INSERT INTO movements VALUES(?,?,?,?,?,?,?,?,?,?,?,?)').run(id,this.org,itemId,warehouseId,kind,delta,reason,requestId,payload,this.user,at,reverses);return this.db.prepare('SELECT * FROM movements WHERE id=? AND org_id=?').get(id,this.org);
+  const id=randomUUID(),at=new Date().toISOString();this.db.prepare('INSERT INTO movements VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)').run(id,this.org,itemId,warehouseId,kind,delta,reason,requestId,payload,this.user,at,reverses,kind.startsWith('adjust')?input.expectedVersion:null);return this.db.prepare('SELECT * FROM movements WHERE id=? AND org_id=?').get(id,this.org);
  });}
  state(){this.access();return {items:this.db.prepare('SELECT id,sku,name,unit,active FROM items WHERE org_id=? ORDER BY sku').all(this.org),warehouses:this.db.prepare('SELECT id,code,name,active FROM warehouses WHERE org_id=? ORDER BY code').all(this.org),balances:this.db.prepare('SELECT item_id,warehouse_id,quantity,version FROM balances WHERE org_id=? ORDER BY item_id,warehouse_id').all(this.org)};}
  history(itemId,warehouseId){this.access();text(itemId,'item ID');text(warehouseId,'warehouse ID');return this.db.prepare('SELECT id,kind,delta,reason,request_id,actor,recorded_at,reverses FROM movements WHERE org_id=? AND item_id=? AND warehouse_id=? ORDER BY rowid').all(this.org,itemId,warehouseId);}

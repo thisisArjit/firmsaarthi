@@ -4,7 +4,7 @@ Local stock-ledger foundation, not a hosted or available product. Target invento
 
 Run Node22.13+ (current machine Node24):
 
-    node --test tests/stock.test.mjs
+    node --test tests/*.test.mjs
 
 No dependencies, provider setup, billing, customer records or external calls are required. Tests use synthetic in-memory SQLite and one temporary file deleted after the concurrency test.
 
@@ -12,5 +12,6 @@ Implemented internally: workspace-scoped SKU/items/base units, warehouses, owner
 
 The current Stock class uses Node SQLite as a reference engine and local invariant harness. It is not deployable to Cloudflare Workers as-is. Port the database adapter to supported Sites D1 prepared statements and transactional batch/SQL guards, add deliberately isolated product authentication, API and sober phone UI, then provision private hosted staging. Do not expose the current constructor/provisioning functions directly to requests: their org/user arguments are internal trusted identities, not authentication. No Transport account or email grants Inventory access.
 
-See docs/PROGRESS.md, docs/ROADMAP.md and docs/RESEARCH.md before continuing. No Sites ID is registered. Sanitized source is backed up under firmsaarthi-inventory/ on the inventory-foundation branch of the existing private thisisArjit/logistrace repository. Re-discover hosted projects before creation so a later run cannot accidentally duplicate an app.
+`lib/d1-stock.mjs` now provides an asynchronous D1 binding adapter with no Node imports. It shares runtime-neutral validation, uses a primary-first session and an atomic SQL batch for posting/replay, and checks adjustment versions and membership at the actual database write. History is cursor-paged.16 local tests pass, including contract tests over SQLite and synchronized independent-connection issue/replay races. This is not actual hosted D1 or browser verification. No Inventory authentication, API, UI, Site or public DNS exists yet. The changed bootstrap schema is for fresh synthetic databases only; versioned deployment migrations must be added before hosted storage or any existing database upgrade.
 
+See docs/PROGRESS.md, docs/ROADMAP.md and docs/RESEARCH.md before continuing. No Sites ID is registered. Sanitized source is backed up under firmsaarthi-inventory/ on the inventory-foundation branch of the existing private thisisArjit/logistrace repository. Re-discover hosted projects before creation so a later run cannot accidentally duplicate an app.
