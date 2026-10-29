@@ -14,7 +14,8 @@ export async function GET(request:Request){try{await blockSupportAccess(request)
   if(url.searchParams.get('view')==='plan'){
     if(!env.DB)throw new AppError('Database is unavailable.',503);const plan=await new BillingService(new TransportService(env.DB,{userId:'',email:''})).policy();return Response.json({trialDays:plan.trial_days,monthlyAmount:plan.monthly_amount,yearlyAmount:plan.yearly_amount,teamMonthlyAmount:plan.team_monthly_amount,teamYearlyAmount:plan.team_yearly_amount},{headers});
   }
-  const svc=await service(request);if(url.searchParams.get('view')==='admin')return Response.json(await svc.adminState(url.searchParams.get('q')||''),{headers});
+  const svc=await service(request);if(url.searchParams.get('view')==='users')return Response.json(await svc.adminUsers(url.searchParams.get('q')||'',Number(url.searchParams.get('offset')||0),url.searchParams.get('account')||'all'),{headers});
+  if(url.searchParams.get('view')==='admin')return Response.json(await svc.adminState(url.searchParams.get('q')||''),{headers});
   const state=await svc.state();let checkout:unknown=null;
   if(state.owner&&env.DB){const user=await new AuthService(env.DB).user(request.headers.get('cookie'));checkout=await new PlanCheckout(new TransportService(env.DB,user!),svc,checkoutConfig(env as unknown as CheckoutEnvironment)).state();}
   return Response.json({...state,checkout},{headers});

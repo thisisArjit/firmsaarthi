@@ -1,5 +1,9 @@
 # Logistrace living roadmap
 
+29 October current operator request: finish the platform Users & plans directory and authorized administrator assignment for firmsaarthi@gmail.com. Stable production45 retains working Razorpay/email OTP; this candidate adds no financial posting or customer access changes. See ADMIN-USERS.md for scoped authorization, actual checks and promotion receipt. Larger transport/CA work remains in its separate development checkout, and Inventory remains unpublished.
+
+Delivered29 October: production46 adds the read-only all-user/plan/expiry directory and explicitly authorized operational administrator assignment.193 automated tests and12 hosted same-source desktop/phone scenarios passed; precise native release and cleanup receipts are in ADMIN-USERS.md. Payment and email recovery remain working. Next planned product work remains the existing Inventory native-entrypoint/onboarding/private-stage milestone; do not advertise it as released or overwrite this stable Transport source with unpublished development work.
+
 Updated 27 October 2026. User direction: research current transport solutions, maintain the roadmap and keep implementing with a 15-minute work checkpoint. Existing heartbeat `build-logistrace-end-to-end` was updated, not duplicated, and follows this chat. Scheduled execution depends on app/host availability and account limits; publish only validated usable increments and record release notes for actual delivered changes.
 
 Product-facing roadmap and release notes live in `lib/product-updates.ts` and Settings → What's new. Keep them aligned with this plan and actual delivered behavior. Future work must never appear as a released capability. Preserve the original Apps Script files outside `tms-web` and the existing company data and issued documents.

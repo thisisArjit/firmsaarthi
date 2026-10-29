@@ -7,7 +7,7 @@ The original root Transport snapshot is retained for history. Current source liv
 
 | Folder | Status |
 | --- | --- |
-| [firmsaarthi-transport](firmsaarthi-transport) | Production 45; email OTP and Razorpay released |
+| [firmsaarthi-transport](firmsaarthi-transport) | Production 46; administrator directory, email OTP and Razorpay released |
 | [firmsaarthi-transport-development](firmsaarthi-transport-development) | Unpublished development branch; do not deploy over stable production |
 | [firmsaarthi-home](firmsaarthi-home) | Published brand homepage |
 | [firmsaarthi-inventory](firmsaarthi-inventory) | Local prototype only; 45 local tests, hosted release gate pending |

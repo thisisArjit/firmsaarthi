@@ -49,6 +49,31 @@ export class BillingService {
     const customers=[];for(const org of rows){const row=await this.subscription(org,plan,false);customers.push({...org,subscription:row,...subscriptionAccess(row,this.now(),org.owner_id===this.adminId)});}
     return {plan,customers,limit:100};
   }
+  async adminUsers(search='',offset=0,account='all'){
+    await this.requireAdmin();
+    if(search.length>100||!Number.isSafeInteger(offset)||offset<0||offset>1000000||!['all','enabled','disabled'].includes(account))throw new AppError('Choose a valid user search and page.');
+    const plan=await this.policy(),asOf=this.now(),limit=25,q=search.trim().toLowerCase();
+    const where="(instr(lower(a.email),?)>0 OR instr(lower(COALESCE(o.name,'')),?)>0) AND (?='all' OR a.disabled=?)";
+    const args=[q,q,account,account==='disabled'?1:0];
+    const from='FROM password_accounts a LEFT JOIN memberships m ON m.user_id=a.user_id LEFT JOIN organizations o ON o.id=m.org_id';
+    const total=Number((await this.s.first(`SELECT COUNT(*) AS count ${from} WHERE ${where}`,...args))!.count);
+    const rows=await this.s.rows(`SELECT a.user_id,a.email,a.disabled,m.role,m.org_id,m.joined_at,o.name,o.owner_id,o.created_at ${from} WHERE ${where} ORDER BY lower(a.email),a.user_id LIMIT ? OFFSET ?`,...args,limit,offset);
+    const users:Row[]=[],cache=new Map<string,Row>();
+    for(const user of rows){
+      let access:Row={status:'unassigned',plan:'No workspace',expiresAt:null,startsAt:null};
+      if(user.org_id&&user.name!==null){
+        let sub=cache.get(user.org_id);if(!sub){sub=await this.subscription({id:user.org_id,created_at:user.created_at},plan,false);cache.set(user.org_id,sub);}
+        const status=subscriptionAccess(sub,asOf,user.user_id===this.adminId&&user.role==='OWNER'&&user.owner_id===this.adminId).status;
+        const grant=status==='paid'?await this.s.first('SELECT tier,interval,period_start FROM subscription_grants WHERE org_id=? AND period_end>? ORDER BY CASE WHEN period_start<=? THEN 0 ELSE 1 END,period_start LIMIT 1',user.org_id,asOf,asOf):null;
+        const tier=status==='exempt'?sub.exempt_tier:grant?.tier||sub.plan_tier,interval=status==='exempt'?sub.exempt_interval:grant?.interval;
+        const name=tier==='team'?'Team':tier==='individual'?'Individual':'Previous plan';
+        const period=interval==='yearly'?'Annual':interval==='monthly'?'Monthly':'';
+        access={status,plan:status==='administrator'?'Administrator':status==='trial'?'Free trial':status==='expired'?'No active plan':status==='exempt'?(sub.exempt_tier?`Complimentary · ${name} ${period}`.trim():'Complimentary access'):`${name} ${period}`.trim(),expiresAt:status==='administrator'?null:status==='exempt'?sub.exempt_until||null:status==='trial'?sub.trial_ends_at:status==='paid'?sub.paid_until:[sub.trial_ends_at,sub.paid_until].filter(Boolean).sort().at(-1)||null,startsAt:grant?.period_start||null};
+      }
+      users.push({userId:user.user_id,email:user.email,disabled:!!user.disabled,role:user.role||null,business:user.name||null,joinedAt:user.joined_at||null,...access});
+    }
+    return {users,total,offset,limit,next:offset+limit<total?offset+limit:null,asOf};
+  }
   async command(action:string,d:Row){
     const s=this.s;
     if(action==='request'){
