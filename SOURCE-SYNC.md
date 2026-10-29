@@ -15,3 +15,7 @@ Transport production45 deployed source c47bee58d21b16414726bffcb7120b5e495b6352;
 ## Transport production46 — 29 October 2026
 
 Current stable Transport source: `9eece6f3db2309c6aef7ed2fa403af5adb4827a9`, fingerprint `f2fedd7c1343dfaf0ec763faf8d58f0bd8834d86b99cea4804c652801a3ab22e`. Production deployment `appgdep_6ae33472a6a88191a48f5cbeed69b367`, runtime21, succeeded2026-10-29T11:57:05.822554Z. The protected administrator assignment uses the existing operational account; its private identity ID is excluded.193 automated tests and12 hosted same-source desktop/phone scenarios passed. See [release and access evidence](firmsaarthi-transport/docs/ADMIN-USERS.md). Payment/email credentials and customer records remain outside GitHub; pushes do not deploy.
+
+## Inventory local onboarding checkpoint — 29 October2026
+
+Local source932f5f8 adds reviewed own-workspace onboarding, read-only eligibility and account-scoped same-intent reload recovery.51 local tests and a synthetic loopback desktop recovery walkthrough passed; this is not hosted/native identity or a public product release. Read firmsaarthi-inventory/docs/ONBOARDING-CHECKPOINT.md for the supported native-entrypoint/private-staging next step. No real-user access, production deployment, DNS, customer data or secrets changed. Transport46 remains authoritative and unchanged. Source backups are separate from publishing.

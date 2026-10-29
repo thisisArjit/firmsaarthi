@@ -10,7 +10,7 @@ The original root Transport snapshot is retained for history. Current source liv
 | [firmsaarthi-transport](firmsaarthi-transport) | Production 46; administrator directory, email OTP and Razorpay released |
 | [firmsaarthi-transport-development](firmsaarthi-transport-development) | Unpublished development branch; do not deploy over stable production |
 | [firmsaarthi-home](firmsaarthi-home) | Published brand homepage |
-| [firmsaarthi-inventory](firmsaarthi-inventory) | Local prototype only; 45 local tests, hosted release gate pending |
+| [firmsaarthi-inventory](firmsaarthi-inventory) | Local prototype only; 51 local tests, native entrypoint and hosted release gate pending |
 | [firmsaarthi-transport-android](firmsaarthi-transport-android) | Internal client only; not Play-published |
 
 Production Transport source is firmsaarthi-transport; the development folder contains unfinished work and must not replace it without reconciliation and the staging gate. Inventory is not hosted or advertised. Android is not Play-published.

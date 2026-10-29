@@ -1,6 +1,19 @@
 import {text} from './domain.mjs';
 export class WorkspaceStartError extends Error{constructor(message,status=403){super(message);this.status=status;}}
 
+export async function workspaceOnboarding(binding,identity,siteId){
+ if(typeof siteId!=='string'||!siteId||!identity||identity.siteId!==siteId||typeof identity.userId!=='string'||!identity.userId||identity.userId.length>200)throw new WorkspaceStartError('Verified Inventory identity required.');
+ const db=binding.withSession?binding.withSession('first-primary'):binding;
+ const rows=(await db.prepare('SELECT org_id,role FROM members WHERE user_id=? ORDER BY org_id LIMIT 2').bind(identity.userId).all()).results;
+ const context=JSON.stringify([siteId,identity.userId]);
+ if(rows.length===1&&['owner','operator','viewer'].includes(rows[0].role))return {state:'existing',context,workspace:rows[0].org_id,role:rows[0].role};
+ // Never mistake a revoked creator, a disabled member or ambiguous grants for
+ // a fresh signup. GET is a read; only explicit POST may create membership.
+ const started=await db.prepare('SELECT user_id FROM workspace_starts WHERE user_id=?').bind(identity.userId).first();
+ if(rows.length||started)throw new WorkspaceStartError('Your Inventory membership requires review. Existing access was not changed.');
+ return {state:'new',context};
+}
+
 // Only call with the server helper's Site-scoped identity. Email, Transport
 // sessions and the service-access token cannot create Inventory membership.
 export async function startWorkspace(binding,identity,siteId,input){

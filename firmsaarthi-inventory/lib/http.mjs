@@ -1,6 +1,6 @@
 import {D1Stock} from './d1-stock.mjs';
 import {inventoryMember} from './identity.mjs';
-import {startWorkspace,WorkspaceStartError} from './workspace-start.mjs';
+import {startWorkspace,workspaceOnboarding,WorkspaceStartError} from './workspace-start.mjs';
 const headers={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Cross-Origin-Resource-Policy':'same-origin'};
 const result=(value,status=200,extra={})=>Response.json(value,{status,headers:{...headers,...extra}});
 class HttpError extends Error{constructor(message,status){super(message);this.status=status;}}
@@ -24,7 +24,10 @@ export async function inventoryHttp(request,{DB,APP_ORIGIN,SITE_ID,getIdentity})
   if(!DB)throw new HttpError('Inventory is unavailable.',503);
   const db=DB.withSession?DB.withSession('first-primary'):DB;
   const verified=await getIdentity();if(!verified)throw new HttpError('Sign in to Inventory.',401);
+  if(request.method==='GET'&&url.pathname==='/api/onboarding')return result(await workspaceOnboarding(db,verified,SITE_ID));
   if(request.method==='POST'&&url.pathname==='/api/workspaces'){
+   const context=request.headers.get('x-inventory-onboarding-context');
+   if(context!==null&&context!==JSON.stringify([SITE_ID,verified.userId]))throw new HttpError('Your Inventory account changed. Reload before continuing.',403);
    const created=await startWorkspace(db,verified,SITE_ID,await body(request));
    return result(created,created.replayed?200:201);
   }
