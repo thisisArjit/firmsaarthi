@@ -11,6 +11,35 @@ function fixture(){
  const client=new StockClient(fetcher);return {sqlite,client,bodies,setActor:value=>actor=value,loseResponse:()=>lose=true,switchBeforeWrite:()=>switchOnWrite=true};
 }
 async function masters(f){await f.client.request('/api/items',{sku:'A',name:'Synthetic goods',unit:'kg'});await f.client.request('/api/warehouses',{code:'MAIN',name:'Synthetic warehouse'});await f.client.load();return {itemId:f.client.state.items[0].id,warehouseId:f.client.state.warehouses[0].id};}
+function recoveryStorage(){const values=new Map();return {getItem:key=>values.get(key)||null,setItem:(key,value)=>values.set(key,value),removeItem:key=>values.delete(key)};}
+
+test('reload recovers a lost successful result with the original request and one ledger row',async()=>{const f=fixture(),storage=recoveryStorage();try{
+ const pair=await masters(f),client=new StockClient(f.client.fetcher,{storage});await client.load();const intent=client.review({...pair,kind:'receive',quantity:'2.5',reason:'Synthetic reload recovery'});f.loseResponse();await assert.rejects(client.confirm(),/Connection interrupted/);
+ const reloaded=new StockClient(f.client.fetcher,{storage});await reloaded.load();assert.deepEqual(reloaded.pending,intent);assert.equal(reloaded.ambiguous,true);assert.throws(()=>reloaded.cancel(),/pending request/);assert.equal((await reloaded.confirm()).replayed,true);assert.equal(storage.getItem('firmsaarthi.inventory.intent.v1'),null);await reloaded.load();assert.equal(reloaded.state.balances[0].quantity,2500000);assert.equal(f.sqlite.prepare('SELECT count(*) n FROM movements').get().n,1);
+ }finally{f.sqlite.close();}});
+
+test('reload does not expose another account intent; same actor recovery retains the reviewed count version',async()=>{const f=fixture(),storage=recoveryStorage();try{
+ const pair=await masters(f),client=new StockClient(f.client.fetcher,{storage});await client.load();client.review({...pair,kind:'adjust_in',quantity:'1',reason:'Synthetic original count'});f.loseResponse();await assert.rejects(client.confirm(),/Connection interrupted/);
+ const reloaded=new StockClient(f.client.fetcher,{storage});await reloaded.load();assert.equal(reloaded.pending.expectedVersion,0);assert.equal(reloaded.state.balances[0].version,1);assert.equal((await reloaded.confirm()).replayed,true);
+ reloaded.review({...pair,kind:'receive',quantity:'1',reason:'Synthetic different account'});f.loseResponse();await assert.rejects(reloaded.confirm(),/Connection interrupted/);f.setActor('other');const other=new StockClient(f.client.fetcher,{storage});await other.load();assert.equal(other.pending,null);assert.equal(storage.getItem('firmsaarthi.inventory.intent.v1'),null);assert.equal(other.state.items.length,0);
+ }finally{f.sqlite.close();}});
+
+test('unavailable recovery storage prevents a fresh write and never unlocks an uncertain recovered intent',async()=>{const f=fixture(),storage=recoveryStorage();try{
+ const pair=await masters(f),client=new StockClient(f.client.fetcher,{storage});await client.load();client.review({...pair,kind:'receive',quantity:'1',reason:'Synthetic storage failure'});const save=storage.setItem;storage.setItem=()=>{throw Error('Synthetic storage denied');};await assert.rejects(client.confirm(),/Nothing was submitted/);assert.equal(f.sqlite.prepare('SELECT count(*) n FROM movements').get().n,0);
+ storage.setItem=save;f.loseResponse();await assert.rejects(client.confirm(),/Connection interrupted/);const reloaded=new StockClient(f.client.fetcher,{storage});await reloaded.load();storage.setItem=()=>{throw Error('Synthetic storage denied');};await assert.rejects(reloaded.confirm(),/recovery is unavailable/);assert.equal(reloaded.ambiguous,true);assert.throws(()=>reloaded.cancel(),/pending request/);assert.equal(f.sqlite.prepare('SELECT count(*) n FROM movements').get().n,1);
+ }finally{f.sqlite.close();}});
+
+test('corrupt same-account saved payload blocks further posting without submitting it',async()=>{const f=fixture(),storage=recoveryStorage();try{
+ await masters(f);storage.setItem('firmsaarthi.inventory.intent.v1',JSON.stringify({version:1,context:f.client.identity,intent:{kind:'receive',requestId:'not-valid',reason:'Synthetic corruption'}}));const reloaded=new StockClient(f.client.fetcher,{storage});await assert.rejects(reloaded.load(),/recovery is invalid/);assert.equal(reloaded.pending,null);assert.equal(reloaded.state,null);await assert.rejects(reloaded.confirm(),/Review a movement/);assert.equal(f.sqlite.prepare('SELECT count(*) n FROM movements').get().n,0);
+ }finally{f.sqlite.close();}});
+
+test('reload after a request never reached the server posts the recovered intent once',async()=>{const f=fixture(),storage=recoveryStorage();try{
+ const pair=await masters(f);let offline=true;const fetcher=(path,init)=>{if(path==='/api/movements'&&offline)throw Error('Synthetic offline before submission');return f.client.fetcher(path,init);};const client=new StockClient(fetcher,{storage});await client.load();const original=client.review({...pair,kind:'receive',quantity:'3',reason:'Synthetic pre-submit disconnect'});await assert.rejects(client.confirm(),/Connection interrupted/);assert.equal(f.sqlite.prepare('SELECT count(*) n FROM movements').get().n,0);offline=false;const reloaded=new StockClient(fetcher,{storage});await reloaded.load();assert.deepEqual(reloaded.pending,original);assert.equal(!!(await reloaded.confirm()).replayed,false);assert.equal(f.sqlite.prepare('SELECT count(*) n FROM movements').get().n,1);
+ }finally{f.sqlite.close();}});
+
+test('failure clearing a completed intent retains same-ID recovery rather than allowing a second post',async()=>{const f=fixture(),storage=recoveryStorage();try{
+ const pair=await masters(f),client=new StockClient(f.client.fetcher,{storage});await client.load();const original=client.review({...pair,kind:'receive',quantity:'1',reason:'Synthetic cleanup failure'}),remove=storage.removeItem;storage.removeItem=()=>{throw Error('Synthetic remove denied');};await assert.rejects(client.confirm(),/cleanup failed/);assert.equal(client.ambiguous,true);assert.equal(client.pending,original);assert.throws(()=>client.cancel(),/pending request/);storage.removeItem=remove;const reloaded=new StockClient(f.client.fetcher,{storage});await reloaded.load();assert.equal((await reloaded.confirm()).replayed,true);assert.equal(storage.getItem('firmsaarthi.inventory.intent.v1'),null);assert.equal(f.sqlite.prepare('SELECT count(*) n FROM movements').get().n,1);
+ }finally{f.sqlite.close();}});
 test('reviewed client receive/issue/adjust/reverse reconciles exact stock through real HTTP handler',async()=>{const f=fixture();try{
  const pair=await masters(f);f.client.review({...pair,kind:'receive',quantity:'10.125',reason:'Synthetic receipt'});await f.client.confirm();await f.client.load();
  f.client.review({...pair,kind:'issue',quantity:'3.125',reason:'Synthetic issue'});await f.client.confirm();await f.client.load();assert.equal(formatQuantity(f.client.state.balances[0].quantity),'7');

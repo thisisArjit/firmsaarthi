@@ -1,3 +1,5 @@
+Latest 29 October 2026,13:05IST: local same-tab reload recovery now preserves the original reviewed stock request and count version, with verified account scope, explicit retry and fail-closed storage handling.37 local tests pass; synthetic desktop loopback recovery/history verified. Read docs/RECOVERY-CHECKPOINT.md. Native identity/workspace integration and private hosted desktop/phone gates still block publication. Transport44/payment release is complete; do not repeat that old blocker.
+
 # Inventory roadmap — 28 October 2026
 
 Current29October cycle: local usable-view implementation added for Stock/Items/Warehouses/reviewed movements/history/reversal;31 local tests and a synthetic desktop loopback walkthrough pass. This is not hosted or release-ready. Native server helper/workspace provisioning, isolated staging/gate, phone checks, sortable columns, payload-free multi-tab invalidation and pending-intent recovery across reload remain required. See UI-CHECKPOINT.md. Continue those tasks before I2 or any new product.

@@ -1,5 +1,6 @@
 import {StockClient,formatQuantity} from './stock-client.mjs';
-const client=new StockClient(),$=id=>document.getElementById(id),movement=$('movement-form');
+const recoveryStorage={getItem:key=>sessionStorage.getItem(key),setItem:(key,value)=>sessionStorage.setItem(key,value),removeItem:key=>sessionStorage.removeItem(key)};
+const client=new StockClient(undefined,{storage:recoveryStorage}),$=id=>document.getElementById(id),movement=$('movement-form');
 let history=null,historyEpoch=0,loaded=false,reversal=null;
 const text=(tag,value)=>{const node=document.createElement(tag);node.textContent=value;return node;};
 function message(value,error=false){$('message').textContent=value;$('message').classList.toggle('error',error);}
@@ -39,7 +40,7 @@ function renderStock(){
  $('stock-empty').textContent=capped?'Showing the first 200 combinations. Select an item or warehouse to narrow the view.':rows.children.length?'':'Add an item and warehouse to start recording stock.';
 }
 async function refresh(){
- $('refresh').disabled=true;try{await client.load();render();loaded=true;message('Records refreshed. Your unfinished forms are preserved.');if(history)await loadHistory(false);}catch(error){fail(error);}finally{$('refresh').disabled=false;}
+ $('refresh').disabled=true;try{await client.load();render();loaded=true;message('Records refreshed. Your unfinished forms are preserved.');if(client.recovered&&client.pending&&!$('review').open){$('review-description').textContent='Recovered '+client.pending.kind.replaceAll('_',' ')+(client.pending.quantity?' · '+client.pending.quantity:'')+'. Reason: '+client.pending.reason;$('review-error').textContent='The previous result is uncertain. Check the same request before recording another movement.';$('confirm').textContent='Retry same request';$('cancel-review').disabled=true;$('review').showModal();}if(history)await loadHistory(false);}catch(error){fail(error);}finally{$('refresh').disabled=false;}
 }
 async function openHistory(item,warehouse){history={item,warehouse,next:null};$('history').hidden=false;await loadHistory(false);$('history').scrollIntoView({behavior:'smooth'});}
 async function loadHistory(append){

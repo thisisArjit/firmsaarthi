@@ -1,3 +1,5 @@
+Latest 29 October 2026,13:05IST: local same-tab reload recovery now preserves the original reviewed stock request and count version, with verified account scope, explicit retry and fail-closed storage handling.37 local tests pass; synthetic desktop loopback recovery/history verified. Read docs/RECOVERY-CHECKPOINT.md. Native identity/workspace integration and private hosted desktop/phone gates still block publication. Transport44/payment release is complete; do not repeat that old blocker.
+
 # FirmSaarthi Inventory
 
 Local stock-ledger foundation, not a hosted or available product. Target inventory.firmsaarthi.com remains unconfigured. Do not advertise it on the public homepage yet.

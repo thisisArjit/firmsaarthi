@@ -1,8 +1,12 @@
+Latest 29 October 2026,13:05IST: local same-tab reload recovery now preserves the original reviewed stock request and count version, with verified account scope, explicit retry and fail-closed storage handling.37 local tests pass; synthetic desktop loopback recovery/history verified. Read docs/RECOVERY-CHECKPOINT.md. Native identity/workspace integration and private hosted desktop/phone gates still block publication. Transport44/payment release is complete; do not repeat that old blocker.
+
 # Checkpoint — 28 October 2026
 
 ## Latest resume — 29 October2026,07:55IST
 
 Local stock UI and safe reviewed-intent controller implemented;31 actual local tests pass with no skips. CUA desktop loopback exercised synthetic SKU/warehouse creation, refresh preserving drafts, receive10.125kg, issue3.125kg/final7kg, visible history and reasoned reversal/final10.125kg. Browser bugs in native fetch binding and prompt support were fixed/retested. New optional authoritative identity-context POST precondition closes account-switch draft races. Exact implementation, tests and remaining boundaries: UI-CHECKPOINT.md. No registered Inventory Site/auth entrypoint/workspace signup, hosted D1/phone E2E, public release/DNS or homepage announcement. No provider accounts/messages, customer data or real-user permission changes. Transport remains production43 and payment-only private stage23; preserved recent payment release checkpoint rather than reverting staging to old22.
+
+Code committed locally a5d76f8aeef89271cd3ebdfd92cac18a4ea87650; sanitized11-file Inventory-only backup on existing private inventory-foundation branch ec4b79363580025a5b477125729bf94782945ee3. Base tree preserved, expected-head fast-forward succeeded and remote client module re-read. No main/other-product/Actions/deployment changes. Local loopback preview stopped and synthetic in-memory DB discarded; temporary browser tab closed. No real credentials or output archives pushed. Continue native helper/workspace creation and hosted integration, not another module.
 
 Started the single new Inventory product in firmsaarthi-inventory after reading portfolio/operational roadmap, Transport CA checkpoint and current source status. Existing inventory project/directory absent; complete owned Sites listing contained homepage/stages, Transport/stage and two unrelated video apps. No Site, account, DNS, OAuth or resources created.
 
