@@ -1,3 +1,5 @@
+Scope clarification —30October2026IST: Supplier remains the only active FirmSaarthi product builder; Inventory/auth, other FirmSaarthi product/marketing and onboarding-email work remain paused. Newer direct owner instructions can independently re-authorise unrelated tasks in another chat; this builder must not override those instructions or repeatedly pause those tasks. No unrelated automation was changed in this cycle.
+
 # FirmSaarthi Transport — Supplier development overlay
 
 Current private staging30, 30 October2026 IST: source7d4c92ab42c65fd27bad56c6a476101653e3cd84, fingerprint1e20e5042da2ece4b17425071abd37159b2d64cc2abc0ebda51ac6435e4bcb11, deploymentappgdep_6ae3b2808874819197c63c84eeb397ed/runtime29.227 local tests, TypeScript/build/audit and14 actual same-source hosted supplier desktop/phone checks passed. Read docs/SUPPLIER-CHECKPOINT.md for exact saved version, evidence and limits. Production47 remains unchanged and public supplier release is not authorised.
