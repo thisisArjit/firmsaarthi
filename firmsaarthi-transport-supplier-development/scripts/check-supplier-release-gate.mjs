@@ -4,7 +4,7 @@ import {readFileSync} from 'node:fs';
 import {releaseFingerprint} from './release-fingerprint.mjs';
 import environments from '../config/environments.json' with {type:'json'};
 const evidence=JSON.parse(readFileSync('outputs/supplier-validation.json','utf8'));
-const required=['supplier-onboarding-and-profile','supplier-fleet-and-routes','supplier-consented-discovery','supplier-boundaries-and-conflicts','supplier-lost-result-recovery'];
+const required=['supplier-onboarding-and-profile','supplier-fleet-and-routes','supplier-consented-discovery','supplier-boundaries-and-conflicts','supplier-lost-result-recovery','supplier-directory-refresh-and-session'];
 if(evidence.projectId!==environments.staging.projectId||evidence.origin!==environments.staging.origin||evidence.environment!=='staging'||evidence.fingerprint!==releaseFingerprint()||evidence.status!=='passed')throw Error('Matching successful private hosted supplier evidence is required.');
 if(!Number.isFinite(Date.parse(evidence.completedAt))||Date.parse(evidence.completedAt)>Date.now()||Date.now()-Date.parse(evidence.completedAt)>86400000||!evidence.versionId||!evidence.deploymentId)throw Error('Fresh supplier deployment evidence is required.');
 for(const [device,width] of [['desktop',1280],['phone',390]])for(const scenario of required)if(!evidence.results?.some(r=>r.device===device&&r.scenario===scenario&&r.status==='passed'&&r.measuredViewport?.width===width))throw Error(`Missing actual supplier E2E: ${device}/${scenario}`);

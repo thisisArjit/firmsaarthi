@@ -38,3 +38,8 @@ The first preview supports100 trucks and100 routes per listing. A single bounded
 6. Booking handoff/rate submissions and completed-trip-based ratings, disputes and response controls. No public load marketplace without review.
 
 Not in this preview: live GPS/SIM/FASTag, government verification, bids, bookings, payments, KYC approval, automatic lead messages, reviews or revenue claims.
+
+
+## Directory freshness increment — 30 October2026
+
+Observed gap: an already-open discovery page retained old contact cards when a later read failed, and fetches had no cancellation/generation ordering. A hidden listing could therefore remain on a page until deliberate navigation. The focused fix adds manual and visible-window focus refresh of the last submitted filters/page, a server-read timestamp, removal of contact actions during unconfirmed/failed reads and generation guards. Unsubmitted filter text is preserved. There is no background minute-by-minute network polling, provider traffic, contact messaging or write retry. Offline/session errors are not described as zero matching suppliers. Already-viewed contacts cannot be retracted from memory/devices; the interface refreshes future reads, not past disclosures. Acceptance requires same-source hosted desktop/phone unpublish→return→card removal, unchanged open filter draft, explicit refresh/republication and session-expiry removal, plus the existing supplier matrix.

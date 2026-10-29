@@ -11,3 +11,10 @@ Official pages reviewed in this run. These are documented product patterns, not 
 | [BlackBuck official load-search guide](https://blackbuckcare.freshdesk.com/support/solutions/articles/81000386307-how-to-find-a-load-) (older guide, modified December2022) describes loading/unloading search followed by contact/bid/booking | Supply discovery and a completed transaction are separate steps | First slice ends at supplier contact. Do not present non-existent loads, bids, awards or bookings |
 
 Current gap matrix: own fleet and lanes, explicit publication and transporter contact discovery are the first staged increment. Consent-based document review, enquiries/abuse controls, rate submissions, booking handoff and completed-trip reviews remain planned. Rates, demand, driver documents and provider tracking are not seeded to make the product appear complete.
+
+
+## Follow-up evidence — 30 October2026 IST
+
+Re-read the official [TruckSuvidha truck posting page](https://www.trucksuvidha.com/TruckPosting.aspx): equipment, payload, scheduled date and directional cities remain documented inputs. This supports treating availability as dated supply information; it does not establish FirmSaarthi live stock, demand, verification or competitor update guarantees. Do not copy the site's real postings, driver details or verification claims.
+
+Technical primary documentation: [MDN AbortController](https://developer.mozilla.org/en-US/docs/Web/API/AbortController) documents cancellation of fetch requests/body consumption. We use this only for replaceable discovery GETs, with an additional generation guard for late results. Mutation receipt/recovery remains separate and is not cancelled/reissued. Product decision: refresh on return/manual action and show the actual server-read time; preserve unfinished search fields and clear unconfirmed contacts on errors. No perpetual polling or third-party integration is added.
