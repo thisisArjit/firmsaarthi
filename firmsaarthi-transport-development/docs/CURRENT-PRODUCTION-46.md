@@ -1,3 +1,5 @@
+Superseded by CURRENT-PRODUCTION-47.md on29October2026. Preserve production47 and the authorized operational administrator.
+
 # Current Transport production — release46
 
 29 October2026: authoritative stable source is ../tms-payments-release. Do not publish this development checkout over it without reconciling working Razorpay, email OTP and the administrator directory, then passing the full unchanged hosted staging gate.

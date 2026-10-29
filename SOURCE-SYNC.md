@@ -1,3 +1,9 @@
+# Current synchronization — Transport47
+
+29 October2026: Transport production47 is live. Source 163bb92c0de750d93ce6290ff4a7c057217662b4, fingerprint ad37f17caab794bbfe6351a8d5da600faf78e64808ec2cdd2c8700a6665db6bc, deployment appgdep_6ae342645eec81918938f31808c7f8fe/runtime21. Stream-bounded sign-in, updated dependencies, baseline browser headers and fingerprint coverage for Worker/pnpm policy inputs passed200 automated tests (one existing import fixture skipped), TypeScript,12 actual hosted desktop/phone scenarios and six sandbox recovery replays with one grant. Three lower-severity tool findings remain documented; no high/critical audit findings. Priority follow-ups: email-ownership/account-claim hardening, administrator MFA, stronger new/reset password rules, full script/frame CSP and file malware/restore controls. See SECURITY-REVIEW-2026-10-29.md. Existing Razorpay, email OTP and operational administrator grant are preserved; no real payment/customer mutation for QA. Inventory remains unpublished and separate.
+
+Sanitized working source and post-release receipts synchronized; native deployed source and GitHub commit are distinct. The original repository root history, other products and unpublished development work are retained. No credentials, hosting identities, customer files/runtime databases, output archives or one-off migration operators are included. Pushes do not deploy. Historical snapshot entries below are superseded by this current release for Transport.
+
 # Source synchronization
 
 Prepared 29 October 2026. Private repository snapshots; no original local Git histories imported.

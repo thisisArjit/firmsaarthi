@@ -3,6 +3,7 @@ import { env } from 'cloudflare:workers';
 import { AuthService, sameOrigin, sessionCookie } from '@/lib/auth';
 import { AppError } from '@/lib/service';
 import { googleConfig } from '@/lib/google-auth';
+import { boundedBody } from '@/lib/request-body';
 export const dynamic='force-dynamic';
 const headers={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'};
 export async function GET(request:Request){
@@ -13,7 +14,7 @@ export async function GET(request:Request){
 }
 export async function POST(request:Request){try{
   if(Number(request.headers.get('content-length')||0)>8192)throw new AppError('Request too large.',413);
-  const raw=await request.text();if(raw.length>8192)throw new AppError('Request too large.',413);
+  const raw=new TextDecoder().decode(await boundedBody(request,8192));
   // Consume the bounded body before rejecting origin: Workers must not leave a
   // cloned request stream unread when an early response completes.
   sameOrigin(request);rejectSupportWrite(request);if(!env.DB)throw new AppError('Database unavailable.',503);

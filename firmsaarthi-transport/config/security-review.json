@@ -1,0 +1,9 @@
+{
+  "reviewedOn": "2026-10-29",
+  "expiresAt": "2026-11-28T00:00:00.000Z",
+  "openToolFindings": [
+    {"id":"GHSA-67mh-4wv8-2f99","module":"esbuild","severity":"moderate","version":"0.18.20","paths":[".>drizzle-kit>@esbuild-kit/esm-loader>@esbuild-kit/core-utils>esbuild"],"reason":"Local schema-loader dependency; application does not invoke esbuild serve. Remains open pending a compatible schema-tool upgrade."},
+    {"id":"GHSA-g7r4-m6w7-qqqr","module":"esbuild","severity":"low","version":"0.27.3","paths":[".>@cloudflare/vite-plugin>wrangler>esbuild",".>wrangler>esbuild"],"reason":"Local Worker build tool; no esbuild development server is published. Remains open pending compatible Workers tooling upgrade."},
+    {"id":"GHSA-wx4j-mvgx-mqwp","module":"satori","severity":"moderate","version":"0.16.0","paths":[".>vinext>@vercel/og>satori"],"reason":"No application ImageResponse/dynamic OG SVG route or attacker-controlled OG rendering was found. Remains open pending supported framework/OG upgrade; do not force an untested pre-1.0 major API replacement."}
+  ]
+}

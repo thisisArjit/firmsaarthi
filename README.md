@@ -1,3 +1,5 @@
+Current stable Transport: production47, source163bb92c0de750d93ce6290ff4a7c057217662b4. See [security review and release evidence](firmsaarthi-transport/docs/SECURITY-REVIEW-2026-10-29.md) and [current synchronization](SOURCE-SYNC.md). Inventory remains local/unpublished; backups do not deploy.
+
 # logistrace
 Logistics done E2E
 
