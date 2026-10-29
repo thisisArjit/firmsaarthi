@@ -1,7 +1,7 @@
 import {test} from 'vitest';
 import assert from 'node:assert/strict';
 import {DatabaseSync} from 'node:sqlite';
-import {readFileSync,mkdtempSync,rmSync} from 'node:fs';
+import {readFileSync,mkdtempSync,rmSync,rmdirSync} from 'node:fs';
 import {join} from 'node:path';
 import {tmpdir} from 'node:os';
 import {database} from './helpers/database';
@@ -138,5 +138,5 @@ for(const kind of ['identical','different-payload','different-request'])test(`in
   assert.equal(results.filter(r=>r.status==='fulfilled').length,kind==='identical'?2:1);
   for(const table of ['organizations','password_accounts','memberships','account_email_proofs'])assert.equal(a.prepare(`SELECT COUNT(*) n FROM ${table}`).get()!.n,1);
   assert.equal(a.prepare("SELECT COUNT(*) n FROM signup_email_proofs WHERE status='consumed'").get()!.n,1);assert.equal(a.prepare("SELECT COUNT(*) n FROM audit WHERE action='account.verified-signup'").get()!.n,1);
- }finally{a.close();b.close();rmSync(directory,{recursive:true,force:true});}
+ }finally{a.close();b.close();rmSync(file,{force:true});rmdirSync(directory);}
 });

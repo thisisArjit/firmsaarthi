@@ -18,7 +18,7 @@ Isolated checkout: ../tms-auth-release, opened from the existing production Site
 
 219 automated tests passed, one pre-existing production-import fixture skipped; TypeScript passed. Nineteen new tests cover proof storage/expiry/browser binding, invalid secrets/budgets, cross-purpose denial, failed delivery, shared reset/signup budget, existing/disabled accounts, exact retry, changed payload, populated migration, audit rollback and independent physical SQLite connections racing identical/different payloads and different proof requests. Concurrency created exactly one account/workspace/evidence/audit without orphan organizations. These are local synthetic tests, not hosted D1/browser/email-delivery E2E.
 
-Candidate fingerprint:1f96214cd638c1699bba043bb2f6735ea34ebde5ec61a029cb5e503266e9c700. The old production47 hosted evidence was actually passed to check-release-gate.mjs and rejected for a different fingerprint; missing evidence also blocks packaging. No customer-facing release notes or feature claim were added. The reviewed dependency policy remains unchanged; no new package was installed beyond the unchanged frozen production47 lockfile.
+Candidate fingerprint:16eba279e65a7bfb7048058a07793a303706376199cf0a27dd3cc52e62565027. The old production47 hosted evidence was actually passed to check-release-gate.mjs and rejected for a different fingerprint; missing evidence also blocks packaging. No customer-facing release notes or feature claim were added. The reviewed dependency policy remains unchanged; no new package was installed beyond the unchanged frozen production47 lockfile.
 
 ## Critical limitation — not fixed on the live app yet
 
