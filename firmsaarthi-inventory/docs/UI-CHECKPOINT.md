@@ -1,0 +1,21 @@
+# Inventory UI working checkpoint — 29 October 2026
+
+Local implementation only. Inventory has no registered Site, native login entrypoint, deliberate workspace provisioning or public URL. This UI must not be advertised as an available product or deployed with the synthetic preview identity callback.
+
+## Implemented
+
+`public/index.html`, `inventory.css` and `inventory.mjs` provide Stock, Items, Warehouses, reviewed receive/issue/adjustment, and cursor-paged movement history with reasoned reversal. Owner-only master/adjust/reverse controls; viewer and operator capabilities retain server enforcement. Tables scroll both ways, filters use existing masters, base units are shown explicitly, and posting does not imply financial entries. Stock rendering caps at200 combinations and asks users to filter rather than creating an unbounded item-by-warehouse DOM.
+
+`public/stock-client.mjs` preserves one frozen request ID/body after an ambiguous response; a retry checks the same intent instead of posting a second movement. Confirmation is single-flight; an uncertain write cannot be discarded and replaced. Refresh retains draft controls and the original reviewed count version; a stale adjustment requires a new deliberate review. Session/state carry the verified workspace/actor to reject mixed-account reads. POST includes an optional identity-context precondition checked against authoritative membership; this header never supplies authorization. It closes the preflight-to-submit account-switch race, including master creation. Authentication/permission failures clear private rendered data and disable editing.
+
+## Actual validation
+
+`node --test tests/*.test.mjs`:31passed,0failed/skipped. Six new client/real-handler tests use local SQLite D1 harness: exact receive/issue/adjust/reverse reconciliation; lost successful response and identical replay with one posted row; stale count despite refresh; account changes before and between preflight/write; viewer denial; simultaneous confirmation. Existing migration/tenant/revocation/oversell/duplicate-intent races pass. Syntax and diff checks pass. No measured coverage percentage or hosted E2E claimed.
+
+CUA desktop browser exercised loopback-only in-memory synthetic preview: add SKU QA-KG/kg and warehouse; refresh preserved10.125 quantity/reason/selects; reviewed receive10.125; reviewed issue3.125 left7; history kept both rows; reasoned reversal of the issue restored10.125 with a third immutable row. Browser QA caught and fixed a native fetch receiver bug and unsupported browser prompt; reversal now uses an accessible in-app reason dialog. Local screenshot in ignored outputs/inventory-ui-history.png. The preview adapter lives only in ignored outputs/ui-preview.mjs, binds127.0.0.1 and uses synthetic identity/data; it is NOT a production entrypoint/authentication proof. No phone/hosted test or D1 deployment was executed.
+
+## Next concrete slice
+
+Wire the native Sites server helper, explicit separate Inventory workspace creation and supported assets into one actual private staging app. Re-discover owned projects first; six owned Sites were listed in this cycle and none is Inventory. Keep DB/members separate from Transport; do not infer membership from email/domain. Add sortable view columns and multi-tab invalidation, validate role revocation/mixed-account draft cleanup, and improve pending-intent recovery across page reload before I1 is release-ready. The current pending-intent retry is memory-only: a reload must NOT be advertised as durable recovery. Server request IDs remain durable. Add explicit server recovery/intent listing or secure account-scoped draft restoration before enabling customer posting.
+
+Then private hosted D1 migration and same-source desktop/phone acceptance must pass before public app/DNS/homepage listing. Native auth/workspace provisioning, hosted E2E, actual source fingerprint/release gate and production packaging remain unfinished. No customer release note or delivered offering is claimed. Preserve Transport production43 and private payment-only staging23; its separate Razorpay webhook approval and release gate remain pending in tms-web/docs/RAZORPAY-RELEASE-CHECKPOINT.md. No provider draft/message or real user access changed.

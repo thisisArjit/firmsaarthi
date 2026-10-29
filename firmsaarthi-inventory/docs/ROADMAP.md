@@ -1,5 +1,7 @@
 # Inventory roadmap — 28 October 2026
 
+Current29October cycle: local usable-view implementation added for Stock/Items/Warehouses/reviewed movements/history/reversal;31 local tests and a synthetic desktop loopback walkthrough pass. This is not hosted or release-ready. Native server helper/workspace provisioning, isolated staging/gate, phone checks, sortable columns, payload-free multi-tab invalidation and pending-intent recovery across reload remain required. See UI-CHECKPOINT.md. Continue those tasks before I2 or any new product.
+
 ## Current state
 
 Local I1 stock core implemented and9 actual Node tests pass. No hosted app, UI, signup or API exists. No published release or domain route. No existing inventory Sites project was found in the current owner's complete six-item Site listing; checked before starting this separate checkout.

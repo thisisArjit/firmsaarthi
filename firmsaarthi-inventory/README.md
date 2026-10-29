@@ -2,6 +2,8 @@
 
 Local stock-ledger foundation, not a hosted or available product. Target inventory.firmsaarthi.com remains unconfigured. Do not advertise it on the public homepage yet.
 
+Latest29October cycle: local Stock/Items/Warehouses/movement-history UI and reviewed posting/reversal flows now exist in public/.31 local tests pass; a synthetic loopback desktop CUA walkthrough exercised master creation, draft-preserving refresh, receive/issue/history/reversal. Native auth entrypoint, workspace creation, hosted staging/phone acceptance and public release remain pending. Read docs/UI-CHECKPOINT.md before continuing; the ignored synthetic preview server must never become a production identity adapter. Earlier no-UI observations below are historical.
+
 Run Node22.13+ (current machine Node24):
 
     node --test tests/*.test.mjs

@@ -1,5 +1,11 @@
 # Inventory review evidence — 28 October 2026
 
+## Review — 29 October2026,07:55IST
+
+Odoo19 physical inventory documents review/confirmation before applying counts and preserving adjustment history: https://www.odoo.com/documentation/19.0/applications/inventory_and_mrp/inventory/warehouses_storage/inventory_management/count_products.html . Zoho quantity adjustments distinguish count changes from value adjustments: https://www.zoho.com/us/inventory/help/items/inventory-adjustments.html . Decision: implement reviewed immutable quantity movements and explicit reversal, retain the expected balance version during refresh, and keep stock changes separate from finance. Added local UI/controller; no valuation/accounting parity claim. No competitor assets copied.
+
+Adjacent-domain rotation: Zoho Expense documents submitter/approver/admin and separately submitted expense reports/approval status: https://www.zoho.com/us/expense/help/admin/exploring/how-zoho-expense-works/ . Future job: track receipt-backed submissions, review decisions and reimbursement as separate events, with permission/audit and duplicate controls. No Expense app or financial posting started; Inventory remains the one new product under construction. Our existing Transport finance is not being claimed as an equivalent report-approval/reimbursement system.
+
 Official sources only; vendor capabilities are benchmarks, not copied assets or a promise of parity. Product/plan restrictions remain a separate check before relying on any hosted integration.
 
 | Official evidence | User job / documented pattern | Decision / delivered gap |

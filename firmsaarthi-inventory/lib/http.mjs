@@ -24,10 +24,13 @@ export async function inventoryHttp(request,{DB,APP_ORIGIN,SITE_ID,getIdentity})
   const db=DB.withSession?DB.withSession('first-primary'):DB;
   const verified=await getIdentity();if(!verified)throw new HttpError('Sign in to Inventory.',401);
   const identity=await inventoryMember(db,verified,SITE_ID);if(!identity)throw new HttpError('Inventory workspace access required.',403);
+  // Optional caller precondition is never authority. It binds an already-open UI
+  // draft to the currently verified tenant/actor and closes account-switch races.
+  const context=request.headers.get('x-inventory-context');if(request.method==='POST'&&context!==null&&context!==JSON.stringify([identity.orgId,identity.userId]))throw new HttpError('Your workspace changed. Reload before continuing.',403);
   const stock=new D1Stock(db,identity);
   if(request.method==='GET'){
-   if(url.pathname==='/api/session')return result({role:identity.role});
-   if(url.pathname==='/api/stock')return result(await stock.state());
+   if(url.pathname==='/api/session')return result({role:identity.role,workspace:identity.orgId,actor:identity.userId});
+   if(url.pathname==='/api/stock')return result({...await stock.state(),workspace:identity.orgId,actor:identity.userId});
    if(url.pathname==='/api/history')return result(await stock.history(url.searchParams.get('item')||'',url.searchParams.get('warehouse')||'',{after:Number(url.searchParams.get('after')||0),limit:Number(url.searchParams.get('limit')||100)}));
   }else{
    if(!['/api/items','/api/warehouses','/api/movements'].includes(url.pathname))throw new HttpError('Not found.',404);
