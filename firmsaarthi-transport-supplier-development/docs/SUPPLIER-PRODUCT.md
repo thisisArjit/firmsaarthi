@@ -39,6 +39,14 @@ The first preview supports100 trucks and100 routes per listing. A single bounded
 
 Not in this preview: live GPS/SIM/FASTag, government verification, bids, bookings, payments, KYC approval, automatic lead messages, reviews or revenue claims.
 
+## Saved-listing readiness and review — 30 October2026
+
+Observed gaps: a completed published supplier still saw Continue setup leading back to Routes; the saved preview could call an expired truck available; route/truck saves could leave a previously checked preview-consent checkbox mounted. The next focused increment derives a checklist and next section from saved profile, eligible-for-listing trucks and lanes. Complete drafts go to review; published workspaces show maintenance guidance instead of incomplete setup. Busy or expired fleet can still describe a business listing, but never counts as currently available capacity. All-not-advertised fleet is explicitly distinguished from no trucks.
+
+One shared display helper handles availability labels/counts and the end-of-day India expiry boundary. A local display clock updates on return/minute without fetching or replacing form inputs; it is guidance, not server authorization or live tracking. Server publication/expiry validation and available-only search remain authoritative and unchanged. Any confirmed save closes the prior preview and removes its checkbox, requiring a new review/consent on the next publish. Unknown save outcomes still use the original exact-receipt recovery, and unsaved business/truck/route form fields remain mounted.
+
+Acceptance: actual measured desktop/phone missing-profile→truck→route guidance; complete draft Review & publish; published Review listing; inactive fleet cannot publish through UI; changing a saved route invalidates earlier preview consent while preserving unfinished profile input. A browser-clock expiry display check must be labelled emulation, not actual server-time hosted expiry proof. Server expiry already has deterministic service tests. No new schema, roles, contacts, verification, financial recognition or automatic publication is introduced.
+
 
 ## Directory freshness increment — 30 October2026
 
