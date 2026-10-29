@@ -16,3 +16,7 @@ Use this address for new business-operation setup when the owner has an authenti
 ## Homepage staging
 
 Static homepage validation now has its own owner-private Site, appgprj_6ae10575d48c8191879a9fdc095cc581, https://firmsaarthi-home-staging.arjit-tiwari-ece14.chatgpt.site, in ../firmsaarthi-home-stage. Keep the public homepage audience and domains unchanged. This staging Site does not contain any Transport app data, Google OAuth configuration, database or bucket.
+
+## Completed Google sign-in ownership migration — 28 October 2026
+
+Explicitly approved supported migration completed: Google Cloud project arctic-keyword-512917-j0 (FirmSaarthi Sign In) is now solely owned by firmsaarthi@gmail.com in the visible IAM list. Recipient accepted approved Cloud terms and ownership invitation; project/dashboard and both retained OAuth clients were verified under the business account before old owner arjit4temp@gmail.com was removed. Google sign-in user-support and developer contacts both saved/reopened as firmsaarthi@gmail.com. Existing client IDs/secrets/callbacks/scopes preserved; no card, billing activation or deployment. Production read-only smoke still googleEnabled=true and release43 fingerprint e6da79b9. Existing Sites/GitHub ownership and app platform administrator pin remain unchanged. This resolves only the earlier Google Cloud migration prerequisite; don't infer access to other services. Detailed evidence: ../tms-web/docs/GOOGLE-SIGN-IN.md.

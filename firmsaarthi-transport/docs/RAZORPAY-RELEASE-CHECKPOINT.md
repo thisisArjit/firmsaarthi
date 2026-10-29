@@ -1,0 +1,31 @@
+# Razorpay release checkpoint — 29 October 2026
+
+Production candidate is the payment-only tree based on production43, preserving pending email reset, CA exports and Accounts summaries in their original checkouts. No real customer or production financial records were used for QA.
+
+## Staging validation completed
+
+Exact fingerprint: 5fc86e356bdee21a917cba26e9aee5a67385cb7cf630f185746513c89cb92bca. Private staging saved version23: appgprj_6ae065554e2c819195306c14a182519e~appgver_6f2a47ac682c8191b1c981b953e61495. Matrix deployment appgdep_6ae2e3a94cec819183541f875ccb0676, runtime22.
+
+All ten hosted Playwright scenarios passed: five each on desktop1280x900 and phone390x844 using Microsoft Edge headless. The standalone runner is ignored outputs/run-payment-hosted.mjs; actual results/screenshots are in outputs/payment-final. Earlier attempts failed on strict dropdown label selectors; corrected the standalone runner only, without changing application or fingerprint inputs. This is an executed hosted runner, not a claim that the older tracked CI spec passed. Phone checks emulate a viewport rather than a physical Android device.
+
+Verified signup/eight-character password/30-day trial/four plans; supplier contact/private4stars/route search/reviewed two-consignment assignment; bulk complete/manual location provenance/valid private PDF/unchanged revenue and profit; honest SIM provider gate; complimentary Team Annual with zero payment, audited read-only support and five denied write endpoints per device. Cross-tenant private files return404. Prior unchanged-candidate local validation:172 passing tests and one deliberate existing production-import fixture skip, TypeScript and build passed. No measured coverage percentage is claimed.
+
+The owner's late mock-bank success was captured by Razorpay Test. Refresh recovered payment pay_TtcOctGc4EjTy9, order order_TtcL1xcvbMmpu0, intent69f684db-e145-445f-bbd1-f0ee6737bdbd, amount2999900paise. Exactly one Team Annual grant starts2026-11-28T05:59:11.931Z after trial, ends2027-11-28T05:59:11.931Z. Six concurrent refreshes returned alreadyRecorded with identical single grant and period; invalid callback/webhook signatures rejected400, other-tenant payment404. Transport net profit stayed200000paise. No real money, saved card, refund or transfer.
+
+All Playwright contexts ended support and logged out. Temporary staging administrator pin was reset to the original documented synthetic platform-owner identity platform-20261027@staging.test, whose user ID was confirmed from staging memberships (the old protected runtime value itself was redacted). Runtime23 deployment appgdep_6ae2e714342c8191aad6bc3d75a1285f applies cleanup to unchanged23 source. Temporary operator must be denied403 afterwards. Synthetic fixtures remain in private staging only.
+
+## Production promotion
+
+Owner approved existing Live webhook TtZ4uLdUUZOSMN for https://transport.firmsaarthi.com/api/plan-payments/webhook, five events payment.captured, order.paid, refund.created, refund.processed, payment.dispute.created; failure contact firmsaarthi@gmail.com. Matching secret is protected in pending production19 alongside protected Live keys. It remains disabled until deployment. No duplicate webhook or regenerated keys are needed. Apply APP_ENV=production and RAZORPAY_ENABLED=true only for this validated promotion, preserving all other settings and production DB/BUCKET/domain/audience.
+
+Actual outputs/staging-validation.json passes the matching-source gate. Production packaging must run node scripts/check-release-gate.mjs as its first command, then the Sites build helper, and publish the exact returned source/archive. Record actual native production IDs after success; no production release is claimed by this pre-promotion checkpoint.
+
+Private staging cannot receive unsolicited external Razorpay webhooks through its owner-only Sites boundary. Signed handler/service tests and invalid-signature checks do not prove external delivery. Production verification is read-only; a real captured payment is not authorized for QA. Automatic renewals and mid-term tier changes are unsupported. Refund/dispute events require operator review and never silently rewrite issued transport accounts.
+
+## Production release44 — 29 October 2026, 12:00 IST
+
+Published saved version appgprj_6adcea83a2e48191834b17064accdbaa~appgver_c837541757ec8191930e13f1db810e41, source0a1f894770c8cdf7516e53cfa482e739bbe370da. Native deployment appgdep_6ae2e7d0a1088191ba29b5c928656a7a succeeded2026-10-29T06:29:57.054459Z with runtime20. Native default URL remains https://logistrace.arjit-tiwari-ece14.chatgpt.site; custom-domain HTTPS at https://transport.firmsaarthi.com independently returned the exact staging-validated production fingerprint. Existing audience, DB/BUCKET, platform pin, Google and other protected settings were preserved.
+
+Razorpay Live checkout enabled with protected existing keys and webhook secret. The existing approved webhook TtZ4uLdUUZOSMN now visibly reports Enabled at29Oct12:00IST, endpoint and five events unchanged; no duplicate was created. Screenshot outputs/razorpay-production-webhook-enabled.png. Production read-only smoke: /api/release200 production/matching fingerprint; /api/auth200 googleEnabled with signed-out response; /api/plan-payments401; /manage-plan200; malformed signed webhook400 Invalid webhook signature (also verifies payment configuration is available). Existing signed-in administrator Manage plan shows original administrator access and all four prices; no customer plan/access or accounting was mutated. No real charge/refund/transfer, and no external valid provider delivery was claimed.
+
+Temporary synthetic operator /api/billing?view=admin403, /api/platform?view=status activefalse and unchanged staging fingerprint verified after cleanup. Browser contexts logged out. All ten hosted scenarios and six concurrent replay checks passed before the first ordered packaging gate; final packaging build passed. Working production release includes only online plan payments/contact fallback; pending password-reset/CA-export/Accounts-summary work remains in its own checkouts. Next payment milestone: observe genuine incoming provider delivery when a real customer independently purchases; review refunds/disputes manually. Do not make a real payment for QA.

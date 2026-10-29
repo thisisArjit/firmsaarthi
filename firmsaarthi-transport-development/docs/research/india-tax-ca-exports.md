@@ -1,0 +1,35 @@
+# Indian transport tax records and CA exports
+
+Research checked 28 October 2026. Implementation is a review pack, not a statutory filing engine. Applicability depends on taxpayer/entity, dates, contracts, registration and evidence. Preserve source invoices, tax snapshots and financial recognition.
+
+## GST: classify before calculating
+
+Road freight, issuing consignment notes as a GTA, truck rental, agency/commission services, multimodal carriage and local delivery are distinct supplies. A transporter registration or a business name cannot determine the tax treatment. Review whether the business issues consignment notes, who is liable for tax, recipient registration/category, exemptions, forward-charge election, place of supply and ITC conditions. Do not encode the frequently repeated historical 5%/12% pair as a timeless rule: 2025 service-rate amendments must be checked for each effective period. Notification 15/2025-CT(R) official PDF endpoint was unavailable during research; no unverified current numeric rate is hardcoded in this feature.
+
+GTA invoices require transport particulars as well as ordinary invoice fields. Export truck, route, weight as entered, customer/supplier GSTIN as issued, invoice date/number/revision, charges, advances, recorded tax components and payable. Do not silently recalculate existing invoices. The current invoicing implementation may reduce the recorded base/payable for advances; flag valuation/time-of-supply for CA review rather than asserting this equals correct GST turnover. P&L freight, invoice turnover, advances, receivables and collections are different reconciliation bases.
+
+Sources: [CBIC invoice rules](https://cbic-gst.gov.in/gst-invoice-rules.html), [CBIC accounts rules](https://cbic-gst.gov.in/accnt-record-rules.html), [GST GSTR-3B guide](https://tutorial.gst.gov.in/userguide/returns/GSTR3B.htm), [GSTR-2B guide](https://tutorial.gst.gov.in/userguide/returns/FAQ_gstr2b.htm), [official 2025 amendment endpoint](https://taxinformation.cbic.gov.in/view-pdf/1010453/ENG/Notifications).
+
+## Income tax and TDS
+
+The Income-tax Act 2025 transition is material for the selected dates: from 1 April 2026 contractor withholding uses section393 and its relevant table item, salary withholding section392; legacy 194C/192 references apply to earlier events. Apply the credit-or-payment timing test, not merely invoice financial-year labels. The export therefore includes dated settlements on earlier-year documents. Do not generate a TDS return from payment totals alone: payer applicability, credit event, payee category, PAN, declarations, thresholds, deductions, deposits and certificates are separate evidence.
+
+Transporter no-deduction treatment requires the statutory ownership/declaration/PAN conditions. Supplier names, hired trucks and an aggregate payment below a threshold do not prove exemption. Supply a supplier cost review schedule with blank/unverified declaration fields; do not fabricate PAN or exemption status. Cash restrictions, non-deduction/late remittance, unpaid statutory dues and MSME payments may require tax adjustments independently of management P&L.
+
+Presumptive schemes are consolidated under section58 (earlier 44AD/44ADA/44AE). The goods-carriage branch requires qualifying ownership and no more than ten goods carriages at any time in the tax year; vehicle weights and ownership months matter. Hired-truck agency operations do not establish eligibility. Commission/agency exclusions also matter when evaluating the general-business branch. Do not auto-elect presumptive taxation or infer owned fleet from truck registrations. CA selects the applicable method and return using complete taxpayer facts, including other income. STTA is a sole proprietorship: preserve owner drawings separately and review personal income-tax amounts as tax adjustments rather than automatically treating every recorded expense as deductible.
+
+Sources: [Income Tax Department transition/TDS FAQs](https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/tax-payments), [new Act scope](https://www.incometax.gov.in/iec/foportal/help/all-topics/e-filing-services/objective-and-scope-new-act), [section393](https://www.incometaxindia.gov.in/w/section-393-5), [section58](https://wmstatic-prd.incometaxindia.gov.in/web/guest/w/section-58-138), [department deduction overview](https://www.incometaxindia.gov.in/w/various-deductions-under-the-income-tax-act). Statutory section pages are discoverable but some direct fetches failed; no rate/threshold calculator is delivered.
+
+## What the CA needs
+
+Recorded data: revenue/cost source lines, management P&L and month totals, all-status expense/income vouchers, non-P&L movements, recoverable tax as entered, consignment advances/hired costs, invoice headers/lines as issued, customer receipts, supplier payments, payroll accruals with linked finance voucher, salary payments, staff advances, review exceptions and a business/period manifest with checksums. Keep voids and undated allocations visible. Do not add settlement rows or payroll to P&L a second time. Unknown payment dates remain unknown. Export does not initialize old paid flags.
+
+External evidence to obtain: original sales/purchase bills, credit/debit notes, bank/cash statements and reconciliations, GSTR-1/3B/2B and RCM proof, PAN/TAN, transporter declarations, tax challans/TDS certificates/AIS/26AS, opening balances, fixed assets/loans/interest/ownership, MSME classification/payment terms and payroll statutory records. No trial balance, balance sheet, depreciation schedule, tax liability or bank reconciliation can be inferred from incomplete management records. Payroll aggregate deductions are not salary TDS/EPF/ESI verification.
+
+CGST section36 ordinarily retains records for72 months from the relevant annual-return due date; specified proceedings can require longer. Downloading is not a backup policy or a books close. Sources: [CGST Act section36](https://cbic-gst.gov.in/pdf/CGST-Act-Updated-31082021.pdf) and CBIC accounts rules above.
+
+## Delivery contract
+
+Owner-only Accounts → CA export; selected financial-year dates. Read-only transactional batch, no business mutations or compatibility backfills. Receipts/payments use payment dates across document years; undated rows appear only for in-period source documents. CSV UTF-8/BOM, quoted cells and formula neutralization; integer paise retained in JSON, rupee columns explicitly suffixed _inr. ZIP has exact CSV/PDF/guide bytes and SHA256 manifest. Individual downloads can differ after edits and say so. Bounded record/byte limits reject rather than truncate. No private attachments/authentication secrets/provider credentials included, no automatic emailing/third-party sharing, no paid dependency.
+
+Future work: reviewed tax profile and effective-dated regimes, immutable purchase bills and credit notes, actual TDS withholding/remittance/certificates, bank matching, auditable journal close/opening balances and CA-reviewed statutory exports. These require distinct workflows and must not be described as available.

@@ -1,0 +1,1 @@
+{"name":"firmsaarthi-transport-android","private":true,"type":"module","scripts":{"release:check":"node scripts/check-play-release.mjs"}}

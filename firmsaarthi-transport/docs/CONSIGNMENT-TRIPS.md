@@ -1,0 +1,9 @@
+# Consignment-based trip identity
+
+Release 29 changes the current planning flow to select one existing consignment. Its exact, case-preserved consignment number is the displayed trip ID; financial year and truck come from the booking. There is no independent trip-number input. Operational progress remains explicit; selecting a consignment does not record a departure, delivery, invoice, payment or verified tracking fix.
+
+The service accepts consignmentId, derives the number/year from the authorized booking and rejects mismatching number/extra IDs. Existing opaque database IDs and request keys remain internal references, preserving document URLs and event relationships. New payloads carry identity=consignment_v1. Existing independent-number and grouped payloads/retries remain accepted for cached-client compatibility; no historical number, allocation, document, review or issued financial record is rewritten. A later strict API cutover would require retiring those clients, not altering saved histories.
+
+The register and detail header show the consignment number for single-consignment histories. Older groups are labelled grouped consignments, with every original consignment in their details/history CSV. Ready-to-bill removes the duplicate trip-number column. One new timeline cannot be allocated twice or recreated after cancellation; review its retained history. A cancelled legacy allocation may start a new consignment timeline while retaining its old history.
+
+Several consignment timelines on the same truck can be in transit together, because the truck can carry several consignments. Legacy grouped vehicle exclusivity remains when either timeline is legacy. This is manual operations, not evidence that the truck completed incompatible routes. Costs remain on the original consignments; no duplicate cost/income is created. Existing role, owner POD review, immutable file-policy and stale-event rules remain.

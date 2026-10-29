@@ -1,0 +1,13 @@
+import {readFileSync} from 'node:fs';
+import {releaseFingerprint} from './release-fingerprint.mjs';
+const evidence=JSON.parse(readFileSync(process.argv[2]||'outputs/staging-validation.json','utf8'));
+const environments=JSON.parse(readFileSync('config/environments.json','utf8'));
+const fingerprint=releaseFingerprint();
+const required=['signup-and-plan','supplier-profile-and-assignment','timeline-files-and-accounting','sim-provider-gate','platform-support-boundary'];
+if(evidence.projectId!==environments.staging.projectId||evidence.origin!==environments.staging.origin||evidence.environment!=='staging')throw new Error('Release gate requires evidence from the configured isolated staging Site.');
+if(evidence.fingerprint!==fingerprint||JSON.parse(readFileSync('lib/release-info.json','utf8')).fingerprint!==fingerprint)throw new Error('Source changed since staging validation. Redeploy and retest staging.');
+if(!evidence.deploymentId||!evidence.versionId||evidence.status!=='passed'||!['cua','playwright'].includes(evidence.runner))throw new Error('A successful hosted staging deployment and E2E run are required.');
+if(!Number.isFinite(Date.parse(evidence.completedAt))||Date.parse(evidence.completedAt)>Date.now()||Date.now()-Date.parse(evidence.completedAt)>24*3600000)throw new Error('Staging evidence must be completed within the last 24 hours.');
+for(const device of ['desktop','phone'])for(const scenario of required)if(!evidence.results?.some(r=>r.device===device&&r.scenario===scenario&&r.status==='passed'))throw new Error(`Missing passing E2E scenario: ${device}/${scenario}`);
+if(evidence.results.some(r=>r.status!=='passed'))throw new Error('Failed, skipped or unfinished E2E checks block production.');
+console.log(`Production gate passed for staging-validated source ${fingerprint}.`);

@@ -1,0 +1,5 @@
+// Read older trip evidence without rewriting historical consignments.
+export const consignmentStatusSql=`COALESCE(c.stage_status,CASE
+ WHEN EXISTS(SELECT 1 FROM trip_allocations a JOIN trip_events e ON e.trip_id=a.trip_id AND e.org_id=a.org_id AND e.allocation_id=a.id WHERE a.org_id=c.org_id AND a.consignment_id=c.id AND a.active=1 AND e.kind='delivery' AND NOT EXISTS(SELECT 1 FROM trip_events x WHERE x.trip_id=e.trip_id AND x.org_id=e.org_id AND x.kind='correction' AND x.target_event_id=e.id)) THEN 'complete'
+ WHEN EXISTS(SELECT 1 FROM trip_allocations a JOIN trip_events e ON e.trip_id=a.trip_id AND e.org_id=a.org_id WHERE a.org_id=c.org_id AND a.consignment_id=c.id AND a.active=1 AND e.kind='dispatch' AND NOT EXISTS(SELECT 1 FROM trip_events x WHERE x.trip_id=e.trip_id AND x.org_id=e.org_id AND x.kind='correction' AND x.target_event_id=e.id)) THEN 'in_progress'
+ WHEN EXISTS(SELECT 1 FROM trip_allocations a JOIN trips t ON t.id=a.trip_id AND t.org_id=a.org_id WHERE a.org_id=c.org_id AND a.consignment_id=c.id AND a.active=1 AND t.status='planned') THEN 'initiated' ELSE NULL END)`;

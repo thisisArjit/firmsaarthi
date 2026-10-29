@@ -1,0 +1,1 @@
+ALTER TABLE `consignments` ADD `rate_label` text;

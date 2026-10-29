@@ -1,0 +1,9 @@
+# Companies workspace
+
+Companies is a separate main menu for customer company profiles and activity across recorded years. Its searchable directory includes saved profiles and exact customer names on consignments/invoices, including historical bookings without a saved profile. Company pages have Profile, Consignments, Invoices and (owner-only) Ledger & payments. Add/edit address and GSTIN here; the old customer form is removed from business Settings. Find business's customer-details action points here.
+
+Each company has contextual PDF/billing links and unbilled consignment invoice review. The selected booking's fiscal year is loaded first, and old-year review uses a date in that year. No invoice is issued by navigation. Owners reuse existing account balances, ageing, statements, CSV/PDF and receipt/due-term controls. Manage company account links leads to the existing Accounts workspace. Supplier balances remain separate.
+
+Profiles/activity use exact historical company names. Ledger selection follows recorded document names and explicit owner aliases, including a renamed linked account, and never infers identity from a similar display name. A linked account can include other reviewed aliases; its account name is shown. Unbilled freight is not a receivable and excess payments remain separate. Empty companies do not acquire fabricated balances.
+
+GET /api/tms?view=companies (optional name) uses the existing subscription and commercial capability boundaries and organization-scoped reads. Commercial members can view profiles, consignments and invoices; ledgers, payment history and account controls remain owner-only. Dispatchers cannot access this view. Company edits reuse existing company.save and never rewrite issued invoice snapshots. No schema/data migration or account reassignment is introduced. Background refresh keeps profile drafts.

@@ -1,0 +1,30 @@
+name: Logistrace quality
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.25.0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm exec tsc --noEmit
+      - run: node scripts/test.mjs --coverage
+      - run: pnpm build
+      - run: node scripts/apply-local-migrations.mjs
+      - run: TMS_SMOKE_SETUP_ONLY=1 node scripts/http-auth-smoke.mjs
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm exec playwright test
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: quality-results
+          path: |
+            outputs/coverage
+            outputs/e2e-report
+            outputs/e2e-results

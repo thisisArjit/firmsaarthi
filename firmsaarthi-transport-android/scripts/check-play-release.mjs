@@ -1,0 +1,14 @@
+import {readFileSync,existsSync} from 'node:fs';
+import {createHash} from 'node:crypto';
+import path from 'node:path';
+import {sourceFingerprint} from './source-fingerprint.mjs';
+const evidencePath='outputs/android-release-validation.json';
+if(!existsSync(evidencePath))throw Error('Play release blocked: Android device, signing, website association and policy evidence is missing.');
+const e=JSON.parse(readFileSync(evidencePath,'utf8'));
+if(e.status!=='passed'||e.publisherAccount!=='firmsaarthi@gmail.com'||!/^[a-f0-9]{64}$/.test(e.releaseBundleSha256)||!/^(?:[A-F0-9]{2}:){31}[A-F0-9]{2}$/.test(e.signingCertificateSha256)||e.debugSigned!==false)throw Error('Play release requires the correct publisher and a verified release-signed bundle.');
+for(const key of ['assetLinks','googleLogin','passwordLogin','tenantBoundary','documentsUploadDownload','backNavigation','offlineRecovery','subscriptionPolicy','privacyAndAccountDeletion','playDeveloperVerification'])if(e.checks?.[key]!=='passed')throw Error('Play release blocked: '+key);
+if(!e.transportStagingGatePassed||!e.sameSourceDeviceEvidence)throw Error('Play release requires validated Transport and same-source Android device tests.');
+if(e.sourceFingerprint!==sourceFingerprint()||!Number.isFinite(Date.parse(e.completedAt))||Date.parse(e.completedAt)>Date.now()||Date.now()-Date.parse(e.completedAt)>86400000)throw Error('Android evidence is stale or belongs to another source.');
+const bundle=path.resolve(e.bundlePath||'');if(!bundle.startsWith(path.resolve('outputs')+path.sep)||!bundle.endsWith('.aab')||!existsSync(bundle)||createHash('sha256').update(readFileSync(bundle)).digest('hex')!==e.releaseBundleSha256)throw Error('Exact validated release bundle is missing or changed.');
+if(e.ownerFinalReviewApproved!==true||JSON.parse(readFileSync('config/app.json','utf8')).playPublicationApproved!==true)throw Error('Owner final Play review approval is required.');
+console.log('Validated for manual Play upload only; this command does not publish or change the website.');

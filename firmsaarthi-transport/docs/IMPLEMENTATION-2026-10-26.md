@@ -1,0 +1,48 @@
+# Accepted implementation programme — 26 October 2026
+
+Production activation completed after user recovered and signed in: STTA is complimentary Team Annual from 2026-10-26T18:28:47.728Z through 2027-10-26T18:28:47.728Z, no payment grant. Billing policy is 30 days; one eligible active trial was extended from its original start, complimentary STTA history preserved. Temporary recovery configuration has been removed/applied at runtime revision 12. Functional activation is no longer blocked; remaining programme gaps are actual whole-source coverage/E2E CI and provider prerequisites, as recorded in PROGRESS.md. Earlier pending notes below are retained as implementation history.
+
+User approved the detailed plan in this chat and requested implementation. Preserve original Apps Script outside tms-web. Existing Site stays public with authenticated tenant APIs. No provider purchases or third-party messages are authorized.
+
+## Decisions
+
+- 30-day trials for new customers and active trials, measured from original start; expired/paid/complimentary periods retained.
+- logistrace@gmail.com is a separate OWNER account and the authorized platform operator. Verified membership ID 165b0bd8-54c5-49d8-9026-84fb0d2795a3, workspace 67217f9d-2db4-42ff-b46d-44f7ae38bc0c. Configure runtime pin to that immutable identity only, never the STTA owner.
+- STTA receives complimentary Team Annual for one year from actual activation, no payment. Use authenticated administrator action after deployment, not data-seeding SQL.
+- Admin-initiated support for debugging: reason, 30-minute session, customer-visible audit, read-only business/payroll/document access, never authentication or provider secrets.
+- Private supplier rating per business; bulk supplier update means consignment-to-supplier assignment only, not changing financial amounts.
+- All stage documents optional, may be added at any stage; all operational roles may upload/view operational files including photo contents. Bulk stage changes required. Owner/reason for backward correction.
+- Menu business: Consignments, Billing, Suppliers, Companies (Demand), Trucks, Staff. Utilities: Tracking, Accounts, Entries, Find business, Manage plan, Settings.
+
+## Release 34 implementation — published
+
+Publication succeeded 2026-10-26T17:30:26.975904+00:00, source b0f55df93be8971b8413316990e6d7f635a4b54b, version 34 (appgprj_6adcea83a2e48191834b17064accdbaa~appgver_a9ed0da5386c8191b6de6eb073b762da), deployment appgdep_6adf8e0eaf348191841fcb2df2fd7e8b, environment revision 9. Schema migrations applied by deployment. Hosted anonymous/auth/CSRF checks pass. Administrator identity enabled; customer activation actions await existing Logistrace login in the accessible browser. These post-publication receipts are local for next source synchronization.
+
+Post-release verification: native DB confirms Logistrace OWNER in its separate organization, STTA OWNER/member roles unchanged, no subscription payment grants, policy still 10 pending the authenticated operator action. New /api/workspace and /api/platform anonymous record/file routes return 401. Added a local regression for historical planned/dispatched/delivered status agreement between lists/detail/state without rewriting old nullable status; all 13 operations tests pass and TypeScript passes (88 tests now authored; published release was validated with 87). This extra test and receipts remain local for next source synchronization; no additional release is claimed.
+
+- Source opened at b7eb5b55d7a59feccc3956438e3ab5d3064c26b2 (published version 33). Native source workflow open result retained in conversation; use Sites workflow for final build/push/package.
+- Removed the earlier unpublished STTA-specific SQL seed from 0023. Migrations 0023/0024 are schema-only: complimentary metadata, trial extension guards, operational profiles/ratings/activity/files, support sessions and scope/immutability checks. Generated Drizzle snapshots/journal retained. Inspect migration SQL before any deploy; no hosted migration has been applied yet.
+- Platform API/session and read-only support workspace; read-only marker blocks ordinary data, billing, template, upload and authentication mutations. Dedicated support reads use scoped SELECTs, not mutating legacy read initializers. Provider connections project only safe metadata. Customer Settings includes support history.
+- Billing defaults 30 days; explicit admin action updates policy and extends eligible active trials idempotently. Complimentary plan overrides support four plans with reason/end, no fake payment history. Production runtime still revision 8 disabled until final release configuration.
+- Supplier directory/profile, private stars, source/destination search over same historical journey, reviewed supplier assignment (blocks settlement/trip-history records). Contact profiles attached to company, staff and truck views. Existing ledgers reused.
+- Canonical consignment status with optimistic versions, bulk preview, owner corrections, append-only manual details/location/document events. New manual bookings start Initiated; existing unknowns retained. Existing trip dispatch/delivery/correction also updates consignment status, while old trip-close/POD policies and finance remain unchanged.
+- Camera/file input and preview, PDF/JPEG/PNG <=10 MB, SHA-256/private R2 storage, role/tenant validation, stale-upload cleanup. No SIM provider connected: clearly gated SIM tracking option and official provider references; no consent message or location query is sent.
+- Added new workspace endpoint to shared invalidation after component tests found the missing refresh path. Bulk review snapshots and upload request IDs retained across retry; drafts preserved during background refresh.
+
+## Verification checkpoint
+
+- Latest whole-source V8 run: 86 tests passed. After browser QA found the administrator form sent support arguments in the wrong envelope, fixed that wiring and added a real-route component regression; the 9-component-test suite passes (87 total tests now authored). TypeScript and production builds are checked again before packaging.
+- Browser E2E suite authored: 10 desktop/mobile cases, list check passed. CI workflow added; actual Playwright browser runs have not run in this conversation. Use CUA for local browser interaction/QA, do not report authored tests as passing browser runs.
+- Latest passing V8 whole-source report (86 tests, before the final admin-form regression): statements 56.29% (3721/6610), branches 50.37% (2923/5803), functions 39.96% (657/1644), lines 71.05% (1424/2004). The accepted target remains >=98% statements/lines/functions and >=95% branches, 100% critical authorization/billing/tenant/accounting-rule branches. TARGET NOT MET; do not hide untested UI/routes through exclusions. Coverage work remains open.
+- Real local HTTP checks pass for supplier contact/rating/search/assignment, bulk status, manual location, private uploads, Dispatcher scope, complimentary Team Annual without payment, and cross-workspace support with normal mutation endpoints denied. Synthetic browser checks verified menu/status deep-link, manual provenance, optional POD upload, private rating, directional supplier search, company contact profile and SIM gate. Browser console showed no errors before support-form QA; final support flow must be retested after the fix. Screenshots under ignored outputs/.
+- Vitest/V8 source-level reporting replaces old bundle-only node:test runner; existing tests ported without dropping assertions. Report artifacts under ignored outputs/coverage; synthetic fixtures only. Development deps include Vitest, V8, Playwright, Testing Library, jsdom and Undici for real API/controller component tests.
+
+## Remaining work before release
+
+Final local checkpoint: all 87 tests pass; TypeScript passes; production build passes. The corrected support form opens the scoped customer table viewer with reason/30-minute expiry and exits back to Customer access; no browser console errors. Supplier/timeline/support screenshots saved locally. Named synthetic operations/auth records and their R2 objects have been removed, and the owned preview stopped. Full desktop/phone Playwright runs and near-100% coverage remain unfinished. Production activation actions below have not yet been applied.
+
+1. Finish robustness review (supplier rating concurrency, actor labels, owner supplier balances, support session expiry/exit, document retry metadata) and final checks.
+2. Add meaningful missing-route/UI/edge coverage; measure actual totals and keep target shortfall explicit. Exercise local HTTP + CUA desktop/phone complete journeys, private documents, supplier assignment and support mutation denial. Remove all named synthetic local records/R2 objects; stop owned preview before packaging.
+3. Update in-app release notes/roadmap/docs with actual delivery and verification only. Configure real platform-admin runtime pin, publish via Sites, record exact source/version/deployment. Keep DB/BUCKET/GPS encryption key and public audience.
+4. Through the authenticated Logistrace administrator UI, grant STTA complimentary Team Annual first, then apply 30-day trial policy/active extension. Verify via native read-only DB tools and UI. Do not invent a password, sign in using secret extraction, or record receipt of a payment.
+5. Verify production read-only auth/tenant boundaries, then continue coverage work and any remaining accepted scope. SIM live access remains gated on approved API contract, credentials, consent and pricing. No integration capability is implied by a vendor product page.
