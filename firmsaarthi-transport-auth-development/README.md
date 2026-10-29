@@ -1,3 +1,11 @@
+# Current unpublished Transport authentication overlay
+
+29 October 2026, 22:02 IST: email-proof signup HTTP/UI is integrated locally in tms-auth-release, source cfc67df1bf67e96f5e38ef7680de60be24a03420, fingerprint49fef4e5077fd83d4d7312eb7f35512c9b57119c8a431b552ba009eec2c9d969.232 automated tests passed (one existing import fixture skipped), TypeScript and matching-source build passed; dependency audit has no high/critical and three reviewed lower-severity tool findings. New email→code→fresh password/business flow uses short-lived HttpOnly proof/recovery cookies, rejects the old public signup bypass only in the candidate and preserves reviewed inputs/exact retry without duplicate accounts. Existing eight-character login and named/unnamed Google continuation pass locally. Both original gates are unchanged; an additive auth gate requires actual measured desktop/phone signup/recovery, legacy claim and existing sign-in coverage. Legacy Google account-claim protection, actual browser/mail delivery and hosted migration/acceptance are still pending. Production47, its operational administrator, Razorpay, email OTP, homepage and Inventory are unchanged. No provider message, real credential/access change, hosted version or public release occurred. Continue tms-auth-release/docs/EMAIL-OWNERSHIP-CHECKPOINT.md; do not advertise this as live or reuse earlier hosted evidence.
+
+This is a source overlay for the matching full Transport47 checkout. It is not a separately registered product or a production release. Native manifests, secrets, customer/runtime data, outputs and original Git histories are excluded. The sanitized snapshot cannot reuse native source fingerprints or hosted evidence: integrate deliberately, regenerate and retest. Stable firmsaarthi-transport and unrelated firmsaarthi-transport-development are retained. GitHub push does not publish.
+
+## Earlier foundation snapshot (superseded locally)
+
 # Unpublished Transport email-ownership candidate
 
 This folder is a sanitized SOURCE OVERLAY for local tms-auth-release, based on published Transport47 (native source163bb92c0de750d93ce6290ff4a7c057217662b4). It is not a separately registered app, a runnable complete new product, or a production release. The authoritative published snapshot remains ../firmsaarthi-transport. Do not overwrite that folder with this candidate.

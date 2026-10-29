@@ -6,6 +6,11 @@ import type {Row} from './domain';
 export type SignupMail={to:string;code:string;requestId:string};
 export type SignupSender=(mail:SignupMail)=>Promise<void>;
 export type SignupReceipt={userId:string;orgId:string;credentialVersion:string;alreadyCreated:boolean};
+export const signupCookieName=()=>process.env.NODE_ENV==='production'?'__Host-tms_signup':'tms_signup';
+export const signupReadyCookieName=()=>process.env.NODE_ENV==='production'?'__Host-tms_signup_ready':'tms_signup_ready';
+export function signupCookie(name:string,value:string,age:number){return `${name}=${value}; Path=/; HttpOnly; SameSite=Strict; Max-Age=${age}${process.env.NODE_ENV==='production'?'; Secure':''}`;}
+function pair(cookie:string|null,name:string){const value=(cookie||'').split(';').map(v=>v.trim()).find(v=>v.startsWith(name+'='))?.slice(name.length+1);return value&&/^[a-f0-9]{64}\.[a-f0-9]{64}$/.test(value)?value.split('.'):null;}
+export function signupSession(cookie:string|null){const proof=pair(cookie,signupCookieName()),ready=pair(cookie,signupReadyCookieName());return proof?{requestId:proof[0],proof:proof[1],registrationToken:ready?.[0]===proof[0]?ready[1]:null}:null;}
 const unavailable=()=>new AppError('This registration session is invalid or expired. Request a new code.',400);
 const invalid=()=>new AppError('The code is incorrect or expired. Check it or request a new code.',400);
 const token=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
@@ -14,7 +19,7 @@ export function validateSignupPassword(value:unknown):asserts value is string{
  if(typeof value!=='string'||value.length>128||Array.from(value).length<15)throw new AppError('Use a password of 15 to 128 characters.');
 }
 
-/** Unwired candidate service. Existing signup/login/Google behavior is unchanged.
+/** Candidate service; production47 is unchanged until the complete hosted gate.
  * Password and business name are chosen AFTER mailbox proof, never emailed or
  * stored in a pending challenge. A caller must keep proof in an HttpOnly cookie.
  */
@@ -59,7 +64,7 @@ export class SignupEmailProof{
    if(!exists)await this.send({to:normalized,code,requestId:id});
    await this.q("UPDATE signup_email_proofs SET status=?,code_hash=CASE WHEN ? THEN code_hash ELSE '' END WHERE id=? AND status='pending'",exists?'failed':'sent',exists?0:1,id).run();
   }catch{await this.q("UPDATE signup_email_proofs SET status='failed',code_hash='' WHERE id=? AND status='pending'",id).run();}
-  return {requestId,proof,message:'If this email can create a new account, a code will arrive shortly. It expires in 10 minutes. Existing users can sign in or reset their password.'};
+  return {requestId,proof,message:'For an eligible email, a confirmation code has been requested. It expires in 10 minutes. If it does not arrive, retry later or sign in/reset an existing account.'};
  }
  async verify(requestId:unknown,code:unknown,proof:string|null,ip:string){
   await this.limit('verify-ip',ip,30,900);
@@ -77,12 +82,21 @@ export class SignupEmailProof{
   if(!account)throw unavailable();
   return {userId:row.user_id,orgId:row.org_id,credentialVersion:row.credential_version,alreadyCreated:true};
  }
- async complete(requestId:unknown,registrationToken:unknown,password:unknown,name:unknown,proof:string|null,ip:string):Promise<SignupReceipt>{
+ async progress(requestId:unknown,proof:unknown,registrationToken:unknown){
+  if(!token(requestId)||!token(proof))return null;
+  const row=await this.q("SELECT email,status,registration_hash,created_at,expires_at FROM signup_email_proofs WHERE id=? AND browser_hash=? AND status IN ('sent','verified','consumed') AND expires_at>?",await digest(requestId),await digest(proof),this.now()).first<Row>();
+  if(!row)return null;
+  if(row.status==='sent')return {step:'code' as const,email:row.email,expiresAt:row.expires_at,resendAt:row.created_at+60};
+  if(!token(registrationToken)||!equal(row.registration_hash,await digest(registrationToken)))return null;
+  return {step:'details' as const,email:row.email,expiresAt:row.expires_at};
+ }
+ async complete(requestId:unknown,registrationToken:unknown,password:unknown,name:unknown,proof:string|null,ip:string,currentUserId?:string):Promise<SignupReceipt>{
   await this.limit('complete-ip',ip,20,900);
   if(!token(requestId)||!token(registrationToken)||!token(proof))throw unavailable();
   validateSignupPassword(password);const business=businessName(name),id=await digest(requestId),browserHash=await digest(proof),registrationHash=await digest(registrationToken);
   const row=await this.q("SELECT * FROM signup_email_proofs WHERE id=? AND browser_hash=? AND registration_hash=? AND status IN ('verified','consumed') AND expires_at>?",id,browserHash,registrationHash,this.now()).first<Row>();
   if(!row)throw unavailable();
+  if(currentUserId&&(row.status!=='consumed'||row.user_id!==currentUserId))throw new AppError('Sign out before creating another account.',409);
   const completionDigest=await this.mac('complete:'+JSON.stringify([id,browserHash,row.email,business,password]));
   if(row.status==='consumed')return this.receipt(row,completionDigest);
   const userId=crypto.randomUUID(),orgId=crypto.randomUUID(),version=crypto.randomUUID(),nonce=randomToken(),at=new Date(this.clock()).toISOString(),hash=await hashPassword(password),now=this.now();
