@@ -1,3 +1,5 @@
+Latest29October2026,15:09IST: explicit Inventory-only workspace creation service/API and additive migration0002 implemented locally.45 local tests pass, including independent concurrent onboarding, rollback, revoked-owner protection and populated-schema upgrade. Native server helper/onboarding UI/private hosted gate are still pending; no Inventory Site or public offering. Read docs/WORKSPACE-CHECKPOINT.md first. Transport45 with OTP and live Razorpay remains unchanged.
+
 Latest 29 October 2026,13:05IST: local same-tab reload recovery now preserves the original reviewed stock request and count version, with verified account scope, explicit retry and fail-closed storage handling.37 local tests pass; synthetic desktop loopback recovery/history verified. Read docs/RECOVERY-CHECKPOINT.md. Native identity/workspace integration and private hosted desktop/phone gates still block publication. Transport44/payment release is complete; do not repeat that old blocker.
 
 # Inventory roadmap — 28 October 2026

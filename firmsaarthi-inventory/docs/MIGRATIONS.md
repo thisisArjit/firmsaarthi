@@ -17,3 +17,5 @@ Use supported Sites/D1 migration packaging against the newly provisioned private
 Actual local verification: 21 tests passed, no failures/skips. Five migration tests cover fresh/reopen preservation, unversioned rejection, history drift/order, rollback and schema parity; existing stock, tenant, role and synchronized two-connection concurrency checks also pass. No customer database was opened or upgraded. Next: product-specific authentication, API/UI, private staging and same-source hosted acceptance.
 
 Official engineering reference: https://developers.cloudflare.com/d1/reference/migrations/ (reviewed 28 October 2026).
+
+29October2026: additive0002_workspace_starts.sql adds the immutable per-creator onboarding receipt. A populated version1 upgrade is tested to preserve all workspace/member/item/warehouse/balance/movement rows. Hosted Sites/D1 application remains unexecuted; local migration checks are not deployment evidence. Never rewrite0001 or adopt an unversioned customer database.

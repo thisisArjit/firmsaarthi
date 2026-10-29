@@ -1,6 +1,9 @@
 PRAGMA foreign_keys=ON;
 CREATE TABLE IF NOT EXISTS workspaces(id TEXT PRIMARY KEY,name TEXT NOT NULL);
 CREATE TABLE IF NOT EXISTS members(org_id TEXT NOT NULL REFERENCES workspaces(id),user_id TEXT NOT NULL,role TEXT NOT NULL CHECK(role IN ('owner','operator','viewer','disabled')),PRIMARY KEY(org_id,user_id));
+CREATE TABLE IF NOT EXISTS workspace_starts(user_id TEXT PRIMARY KEY NOT NULL,org_id TEXT UNIQUE NOT NULL REFERENCES workspaces(id),request_id TEXT NOT NULL,payload TEXT NOT NULL,created_at TEXT NOT NULL);
+CREATE TRIGGER IF NOT EXISTS immutable_workspace_start_update BEFORE UPDATE ON workspace_starts BEGIN SELECT RAISE(ABORT,'Workspace creation records are immutable.');END;
+CREATE TRIGGER IF NOT EXISTS immutable_workspace_start_delete BEFORE DELETE ON workspace_starts BEGIN SELECT RAISE(ABORT,'Workspace creation records are immutable.');END;
 CREATE TABLE IF NOT EXISTS items(id TEXT NOT NULL,org_id TEXT NOT NULL REFERENCES workspaces(id),sku TEXT NOT NULL COLLATE NOCASE,name TEXT NOT NULL,unit TEXT NOT NULL CHECK(unit IN ('each','box','kg','litre','metre')),active INTEGER NOT NULL DEFAULT 1 CHECK(active IN (0,1)),PRIMARY KEY(org_id,id),UNIQUE(org_id,sku));
 CREATE TABLE IF NOT EXISTS warehouses(id TEXT NOT NULL,org_id TEXT NOT NULL REFERENCES workspaces(id),code TEXT NOT NULL COLLATE NOCASE,name TEXT NOT NULL,active INTEGER NOT NULL DEFAULT 1 CHECK(active IN (0,1)),PRIMARY KEY(org_id,id),UNIQUE(org_id,code));
 CREATE TABLE IF NOT EXISTS balances(org_id TEXT NOT NULL,item_id TEXT NOT NULL,warehouse_id TEXT NOT NULL,quantity INTEGER NOT NULL DEFAULT 0 CHECK(typeof(quantity)='integer' AND quantity BETWEEN 0 AND 9000000000000),version INTEGER NOT NULL DEFAULT 0,PRIMARY KEY(org_id,item_id,warehouse_id),FOREIGN KEY(org_id,item_id) REFERENCES items(org_id,id),FOREIGN KEY(org_id,warehouse_id) REFERENCES warehouses(org_id,id));

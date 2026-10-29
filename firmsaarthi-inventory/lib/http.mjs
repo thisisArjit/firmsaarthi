@@ -1,5 +1,6 @@
 import {D1Stock} from './d1-stock.mjs';
 import {inventoryMember} from './identity.mjs';
+import {startWorkspace,WorkspaceStartError} from './workspace-start.mjs';
 const headers={'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','Cross-Origin-Resource-Policy':'same-origin'};
 const result=(value,status=200,extra={})=>Response.json(value,{status,headers:{...headers,...extra}});
 class HttpError extends Error{constructor(message,status){super(message);this.status=status;}}
@@ -23,6 +24,10 @@ export async function inventoryHttp(request,{DB,APP_ORIGIN,SITE_ID,getIdentity})
   if(!DB)throw new HttpError('Inventory is unavailable.',503);
   const db=DB.withSession?DB.withSession('first-primary'):DB;
   const verified=await getIdentity();if(!verified)throw new HttpError('Sign in to Inventory.',401);
+  if(request.method==='POST'&&url.pathname==='/api/workspaces'){
+   const created=await startWorkspace(db,verified,SITE_ID,await body(request));
+   return result(created,created.replayed?200:201);
+  }
   const identity=await inventoryMember(db,verified,SITE_ID);if(!identity)throw new HttpError('Inventory workspace access required.',403);
   // Optional caller precondition is never authority. It binds an already-open UI
   // draft to the currently verified tenant/actor and closes account-switch races.
@@ -41,7 +46,7 @@ export async function inventoryHttp(request,{DB,APP_ORIGIN,SITE_ID,getIdentity})
   }
   throw new HttpError('Not found.',404);
  }catch(error){
-  if(error instanceof HttpError)return result({error:error.message},error.status);
+  if(error instanceof HttpError||error instanceof WorkspaceStartError)return result({error:error.message},error.status);
   const message=String(error?.message||'');
   if(/Owner permission|Stock permission|Workspace access/.test(message))return result({error:'This action is not permitted.'},403);
   if(/UNIQUE constraint/.test(message))return result({error:'That code or reference is already in use.'},409);
