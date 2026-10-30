@@ -26,3 +26,12 @@ Official [Transport Pro Active Capacity guide](https://www.transportpro.net/supp
 Official [Truckstop FAQ](https://truckstop.com/frequently-asked-questions/) describes truck posting as making equipment and availability visible; access to private freight depends on a separate approval relationship. Adopt explicit profile review/publication rather than implying that completing a checklist verifies the supplier or produces a booking. Do not transplant US authority requirements, payment products, paid subscriptions or vendor performance claims into this India-oriented preview.
 
 Current gap matrix addition: saved-step guidance and a shared honest availability/preview label are implemented locally; fresh review consent is reset by confirmed saves. Hosted validation/private publication remain required before marking this increment delivered. Enquiries/abuse/staff permissions remain next design work; demand, bids, KYC and contracts are still not invented.
+
+
+### 30 October 2026 official-source review: controlled own-data export
+
+[Vehicle overview, Fleetio](https://help.fleetio.com/en_US/vehicle-overview) (updated 10 March 2026) links vehicle-list Export CSV to [Working with your data on an index page](https://fleetio.helpjuice.com/en_US/fleetio-basics/working-with-your-data-on-an-index-page) (updated 26 February 2026). Its documentation separates viewable records and explicit Export permission. Useful job: carry your own saved fleet data to a spreadsheet. Adaptation: only the enabled current workspace owner downloads their saved fleet/routes; no directory bulk export, financial posting, paid integration or competitor asset reuse.
+
+[OWASP CSV Injection](https://community.owasp.org/attacks/CSV_Injection), reviewed 30 October 2026, covers ASCII/fullwidth formula prefixes and control/separator issues; quoting alone is insufficient and spreadsheet/resave behavior varies. Decision: quote every field and prepend visible Text: to formula-like/control-leading values, including Unicode format-prefixed operators. Explicitly label these files for human viewing, with altered guarded values and no import guarantee. Parser/unit tests are not evidence of Microsoft Excel execution/resave testing.
+
+Gap matrix: owner-private saved CSV delivered on private stage32 after18 same-source hosted Supplier checks, including actual downloads on measured desktop/phone. No public release. XLSX/PDF/import, delegated export permissions, enquiries/abuse and staff management remain future complete workflows. Directory/contact export is deliberately unavailable.

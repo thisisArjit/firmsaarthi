@@ -1,6 +1,7 @@
 import {AppError,type Identity} from './service';
 import {requireTransporter,businessMode} from './business-mode';
 import type {Row} from './domain';
+import {supplierCsv,type SupplierExportKind} from './supplier-export-csv';
 
 import {truckTypes,type SupplierProfile,type SupplierTruck,type SupplierLane,type SupplierDraft} from './supplier-types';
 const empty=():SupplierDraft=>({profile:{name:'',kind:'Fleet owner',city:'',contact:'',phone:'',email:'',about:''},trucks:[],routes:[]});
@@ -47,6 +48,15 @@ export class SupplierMarketplace {
   }
   async state(){const m=await this.member(),row=await this.q('SELECT * FROM supplier_listings WHERE org_id=?',m.org_id).first<Row>();
     return {mode:await businessMode(this.db,this.user.userId),owner:m.role==='OWNER',version:row?.version??0,draft:row?JSON.parse(row.draft) as SupplierDraft:empty(),published:row?.published?JSON.parse(row.published):null,publishedAt:row?.published_at??null,updatedAt:row?.updated_at??null};
+  }
+  async exportCsv(kind:unknown){
+    const section=one(kind,['trucks','routes'],'private export') as SupplierExportKind;
+    // Account, current membership and actual workspace ownership are checked in
+    // the same read that retrieves the draft. No caller-supplied workspace ID,
+    // public directory, private transporter ledger or finance table is read.
+    const row=await this.q("SELECT l.draft FROM memberships m JOIN organizations o ON o.id=m.org_id JOIN password_accounts a ON a.user_id=m.user_id LEFT JOIN supplier_listings l ON l.org_id=m.org_id WHERE m.user_id=? AND m.role='OWNER' AND o.owner_id=m.user_id AND a.disabled=0",this.user.userId).first<Row>();
+    if(!row)throw new AppError('Only the current workspace owner can download saved supplier data.',403);
+    return supplierCsv(row.draft?JSON.parse(row.draft):empty(),section,this.clock());
   }
   async command(input:Row){
     const m=await this.member(true),action=one(input.action,['profile.save','truck.save','truck.remove','route.save','route.remove','publish','unpublish'],'supplier action'),requestId=uuid(input.requestId),version=input.version;
