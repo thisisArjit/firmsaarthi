@@ -1,0 +1,124 @@
+Supplier production request —30 October2026: work continues only in ../tms-supplier-release. Read docs/SUPPLIER-PRODUCTION-RELEASE.md there first. Private stage36 has selective email-proof signup and explicit legacy Google-claim security, source80c6ae744fb8d0a46c3e770439c09757089a0fb7b/fingerprint99d0453b3e9f148cd3e377cafe2ff7865dc4d0451247c647d31db5d4904f2896, deploymentappgdep_6ae4489d97b481919af76c5fdabc48d1/runtime29.307 local tests, TypeScript/build/dependency gate and22 actual hosted Supplier desktop/phone checks pass. Eight partial original Transport checks pass; baseline/auth/provider proof remains incomplete. Owner approved production after gates, not bypassing them. Pending specific isolated Gmail legacy-claim test approval and user-completed fresh-password handoff; no real-user grant yet. Original stage35 checkout, production47/payments/email/admin, homepage and paused products are preserved. No public Supplier release. Prior checkpoints below are historical.
+
+Current Supplier stage35: dirty truck/route editor changes and Cancel edit now require Keep/discard review; clean/same-record/tab changes stay uninterrupted. In-memory mounted-form baselines survive read/focus rerenders; no autosave or general reload persistence.252 local tests and22 exact-source hosted Supplier checks pass, including shared removal review regressions. Public release remains blocked by owner review, ownership hardening and original baseline. Next complete a deliberately scoped private enquiry/abuse workflow rather than repeating finished fleet form polish. See SUPPLIER-CHECKPOINT.md.
+
+Current Supplier stage34: saved truck/route removal now requires review and explicit confirmation, with Keep/Escape preserving drafts and no request. Native focus/centering repaired after retained stage33 failure.246 local tests and20 exact-source hosted Supplier desktop/phone checks pass, including conflict and actual removal commit/lost-result/exact retry. Original baseline, ownership hardening and owner review still block public release. Next: owner feedback and deliberate enquiry/abuse/staff workflows; no archive/undo or bulk deletion. See SUPPLIER-CHECKPOINT.md.
+
+Current Supplier stage32: own-workspace owner-only saved fleet/routes CSV downloads delivered privately,242 local tests and18 same-source hosted desktop/phone Supplier checks pass. No profile/contact/directory bulk export or financial posting. Original baseline, ownership hardening and explicit owner review still block public release. Next: owner feedback, deliberate enquiry/abuse/staff permissions; XLSX/PDF/import and delegated exports remain unbuilt. See SUPPLIER-CHECKPOINT.md.
+
+Current Supplier stage31: saved-step guidance, ready/published review navigation, honest availability labels/counts and fresh preview consent after confirmed saves are delivered privately.234 local tests and16 same-source supplier desktop/phone checks pass. Browser-clock expiry display coverage is emulation, not server-time proof. Original baseline/ownership hardening/owner review still block production. See SUPPLIER-CHECKPOINT.md; next review supplier feedback, staff/enquiry/abuse and own-data export as complete gated workflows.
+
+Scope clarification,30October2026IST: Inventory, independent auth, other FirmSaarthi product/marketing work and onboarding-email monitoring remain paused for Supplier priority. Respect later direct owner instructions that independently re-authorise unrelated work in another chat; do not repeatedly pause those tasks or treat this Supplier builder as global control over newer owner requests. No unrelated task was changed in this cycle.
+
+Current Supplier stage30: committed-search manual/focus refresh, stale-contact removal, ordering/cancellation guards and server-read timestamp are delivered on private staging.227 local tests and14 current-source hosted supplier desktop/phone checks pass. Owner review/ownership hardening/original Transport baseline still block public promotion. Next review supplier setup/availability/staff/enquiry/abuse usability while preserving all existing role/history safeguards. See SUPPLIER-CHECKPOINT.md.
+
+# Supplier staging priority — 30 October 2026 IST
+
+The owner has paused all other work and recurring tasks. The existing builder runs every two hours for Supplier only, using tms-supplier-stage and the existing private staging Site. Production47 remains unchanged. No production promotion until owner review, deliberate account-ownership hardening integration and all current Transport/security/supplier hosted gates.
+
+Read SUPPLIER-CHECKPOINT.md and SUPPLIER-PRODUCT.md first. Current scope: separate supplier workspace/entrypoint, private trucks, preferred routes, business contact profile, explicit consent/preview/publish/hide and authenticated transporter discovery. Existing private transporter Suppliers/finance/history stay separate. Demand, documents, enquiries, bids and bookings remain future work; no empty tabs or invented demand. The saved staging build is under actual desktop/phone QA; old partial evidence must not be reused.
+
+Historical Transport roadmap follows; priorities and cadence below are superseded for this staging initiative.
+
+# Logistrace living roadmap
+
+Updated 27 October 2026. User direction: research current transport solutions, maintain the roadmap and keep implementing with a 15-minute work checkpoint. Existing heartbeat `build-logistrace-end-to-end` was updated, not duplicated, and follows this chat. Scheduled execution depends on app/host availability and account limits; publish only validated usable increments and record release notes for actual delivered changes.
+
+Product-facing roadmap and release notes live in `lib/product-updates.ts` and Settings → What's new. Keep them aligned with this plan and actual delivered behavior. Future work must never appear as a released capability. Preserve the original Apps Script files outside `tms-web` and the existing company data and issued documents.
+
+## Current baseline
+
+Live release 43 (28 October IST): Google-authoritative Gmail/Workspace emails automatically open the matching existing password profile; its original password, role, workspace, plan and records remain intact. New Google users still receive separate workspaces. The complete desktop/phone staging matrix passed on fingerprint e6da79b9; see PROGRESS.md for exact IDs and test boundaries. Larger opt-in document-stage work in tms-web remains unpublished. Earlier release entries below are historical.
+
+27 October POD-default staging candidate: owner Settings/planning flow, immutable source/request snapshots, role-based overrides, atomic stale-default protection and backup metadata are integrated. 142 tests, TypeScript and stage build pass. Isolated private staging has the candidate plus initial desktop/HTTP smoke; full required hosted desktop/phone matrix and final release-note/source validation remain pending. No production release or customer data changes. Exact native IDs and fixture handoff in PROGRESS.md.
+
+27 October unpublished API checkpoint: trip-policy current reads and owner revision writes now have authentication, tenant/role, billing, CSRF, support and request-budget guards plus shared-refresh invalidation. 133 tests and TypeScript pass locally. Trip default application, snapshot/replay semantics and owner Settings/planning UI are still unfinished; do not deploy or describe this as available. Finish that focused flow before the next stage promotion. Production remains release 39.
+
+27 October unpublished next increment: workspace POD default revision storage/service is implemented locally, with seven new boundary/migration tests; full suite 126/126 and TypeScript pass. No API/UI/trip integration or hosted migration yet, so the feature remains unavailable. Complete the end-to-end scope in TRIP_DOCUMENTS.md, including immutable new-trip revision snapshots and replay/override rules, then validate isolated staging before publication. Production remains release 39; no new release notes.
+
+27 October post-release validation only: 119 automated tests pass, including the operational-completion/timeline-file versus owner-reviewed required-trip-file boundary. TypeScript passes; no runtime change or new publication. Production remains release 39. The added test changes the release fingerprint, so the previous hosted evidence cannot authorize a future candidate; staging must be refreshed and retested. Next usable increment remains immutable versioned business-default evidence policies, preserving previous trips and financial history.
+
+27 October release 39 published: Settings editor, unique path reservation, polished responsive public template, explicit publication, snapshot isolation, route suggestions and unpublish. 118 automated tests, TypeScript/build and 12 same-source hosted CUA/HTTP scenarios pass. COMPANY-WEBSITES.md documents public-field boundaries and permanent published addresses. No real company page is automatically public; production publication checkpoint in PROGRESS.md.
+
+27 October release 38 published: the simplified default is replaced for new invoices and explicit reissues by a versioned transcription of the original InvoiceTemplate.html. Existing snapshots/archived originals and custom layouts remain compatible. Stage version 3 passed all 12 CUA desktop/phone checks including actual invoice downloads; 111 automated tests and TypeScript pass. Production HTTPS fingerprint matches validated staging; runtime revision 12. See INVOICE-TEMPLATES.md and the exact publication checkpoint in PROGRESS.md.
+
+27 October staging requirement: production publication is now gated by the isolated owner-private staging Site and matching-source desktop/phone hosted E2E evidence. See STAGING.md and config/environments.json. All 10 CUA scenario/device checks passed on hosted stage version 1/runtime 2; 107 unit/API/component tests, TypeScript and build pass. Standalone hosted Playwright CI remains unexecuted and requires secrets; distinguish it from the completed CUA browser run. Missing/mismatched evidence blocks the local production gate. The recurring automation was updated in place. Production remains release 37; no production deployment for this infrastructure-only task.
+
+27 October owner-requested branding increment: FirmSaarthi Transport replaces visible Logistrace wording, with a matching original mark/favicon, metadata and new export names. Existing account/data identifiers and imported template formats stay compatible; payment contact remains logistrace@gmail.com. Release-37 publication checkpoint is recorded in PROGRESS.md. This supersedes the earlier note below that in-app naming still says Logistrace.
+
+27 October domain/cadence change: https://transport.firmsaarthi.com is active with HTTPS; native domain/provider/SSL active at 07:55:28 UTC (13:25 IST). Public sign-in/plan and anonymous/cross-origin denial checks pass; see CUSTOM-DOMAIN.md. Existing heartbeat now runs every 15 minutes, superseding the historical five-hour cadence below. Same Sites project/storage/public audience and saved version 36 preserved; publish only passing increments and do not force a release every interval. In-app naming still says Logistrace; public customer pages remain unimplemented.
+
+27 October 13:59 IST verification checkpoint: 107 tests and TypeScript pass. Current whole-source coverage is 73.96% lines / 59.29% statements / 53.35% branches / 43.22% functions; accepted coverage target and actual desktop/phone E2E CI remain unfinished. Added finance component-to-handler regressions for draft/post/void, refresh preservation, concurrent edit rejection, recognized results/date filters and safe CSV export. POD upload handler retains 100% on all four coverage measures. These regressions introduced no runtime change or new release; see PROGRESS.md. Test count and individual-route/line coverage are not product-wide coverage.
+
+Production checkpoint: version 36/runtime 12 is live; separate Logistrace administrator recovered and signed in. STTA complimentary Team Annual is active until 26 October 2027 without payment; 30-day trial policy and eligible active-trial extension applied through administrator controls. Functional release-34 workflows are shipped. Test coverage remains below the accepted target and actual desktop/phone browser CI remains unfinished. SIM provider credentials/contract/consent integration remain external prerequisites.
+
+Release 34 candidate: entity-first navigation; supplier directory/contact/private assessment, same-journey source/destination search and reviewed bulk assignments; simple consignment status with optional operational files/manual locations; shared company/staff/truck contacts; 30-day trial policy and named complimentary plans; audited, time-limited platform support. See IMPLEMENTATION-2026-10-26.md for current validation and exact publication checkpoint. Full-source test coverage remains below the accepted target and browser CI is pending. Live SIM is gated on provider setup and consent.
+
+Release 33: new-password minimum is 8 characters (maximum 128) throughout signup, password change, team creation/reset and owner recovery. The separate Logistrace account is now verified; runtime revision 9 pins the authorized immutable OWNER identity for the next deployment. STTA remains a customer. Never assign platform access based only on a typed email.
+
+Release 32: Manage plan replaces separate header subscription links. The menu shows current access and the trial banner states its precise end in IST. Administrator customer access controls are nested within the plan page; pricing, exemptions and manual activation retain their permissions.
+
+- Release 31: optional owner-managed interested city in the workspace business profile, used as the Find business default; shared dropdown-only city catalog replaces free-text city entry. No migration or financial changes. See SHARED-DATA-AND-DISCOVERY.md. Trip-stage evidence policies remain next.
+
+- Release 30: shared sorting/scrolling across all 40 HTML table views in 15 screens; manual-entry wording for payment presentation and related statement CSVs. Sorting precedes business pagination, with editable-row identity/history preserved. See TABLES-AND-PAYMENT-LABELS.md. Trip evidence policy work remains next.
+
+- Release 29: consignment-based trip identifiers in the planning flow; separate Settings invoice-template tab; 39 sourced business locations / 32 researched cities, 25 with published contacts, plus arbitrary-city external exploration. Existing grouped histories remain compatible; full live business-directory ingestion is a future provider/data-quality decision. Stage evidence policies remain next.
+
+- Release 28: separate Companies workspace with all-years profile/activity, scoped owner ledgers, statement/payment controls and contextual billing actions; customer profiles moved from Settings. See COMPANIES.md. Document policies remain the next planned increment.
+
+- Release 27: six-city prospect filtering and sourced business contacts; owner invoice-layout editor with JSON import/export/preview and immutable snapshots; contextual invoice and collection actions. See INVOICE-TEMPLATES.md. Trip-stage policies remain the next roadmap priority.
+
+- Subscription baseline: 30-day per-business trial (activated 26 October); Individual ₹1,999/month or ₹19,999/year and Team ₹3,499/month or ₹29,999/year; four protected plan cards, access-aware upgrade prompts and administrator-only pricing/exemption/manual activation. Sign-in has no pricing banner. See SUBSCRIPTIONS.md. Gateway checkout/renewals remain gated; transport accounting is unchanged.
+- Current increment: optional owner-only private POD upload, file-specific accept/reject review, replacements and latest-event correction history. See TRIP_DOCUMENTS.md. Stage rules remain the next priority.
+- Published version 19: shared truck/customer/supplier/location lookups and refresh, cross-tab updates with draft preservation, Patna industrial-goods research and private prospect-to-customer workflow. This is not a live public load marketplace.
+- Version 18: password signup into isolated workspaces, Google sign-in/linking implementation gated on OAuth configuration. Google setup and transactional verification/reset emails remain external prerequisites.
+- Version 17: Dispatcher and Commercial member capabilities. Existing commercial, trip, document, finance, staff, payroll, settlement and import modules remain available within their documented limits.
+
+## Priority 1 — document-backed trip execution
+
+Private owner-only POD files and scoped review/correction links are implemented within Trips. Release 26 adds immutable per-new-trip owner choice to require accepted uploaded POD files for every consignment, with server-side acceptance/close gates and matching readiness suggestions. Existing trips retain reference-only compatibility. Next add versioned business-default policy and explicit placed, loaded, in-transit, destination-arrived, delivered and POD-accepted states with configurable document rules. Keep delegated document access gated until uploader/reviewer capabilities are defined and tested.
+
+- Stage evidence can include placement confirmation, loading slip/photos, weighbridge receipt and signed delivery document. These are examples, not a universal legal checklist. E-way documents are required only when the configured business policy/applicable movement calls for them; never infer statutory applicability from a freight invoice.
+- Version the policy at trip creation so later configuration does not silently invalidate old trips. Existing trips keep legacy/manual provenance unless explicitly upgraded.
+- Distinguish uploaded, awaiting review, accepted, rejected, replaced and expired evidence. Record actor, actual event time, recorded time, original file hash, private object reference and review/correction reasons.
+- Verify the current asset download/upload endpoints for each new purpose: front-end hiding or membership alone is not sufficient. Authorize the uploader, reviewer, trip/consignment owner and any cross-company participant for every operation. Do not reuse the vehicle-document purpose as a generic authorization shortcut.
+- Enforce required evidence and allowed transitions server-side. Exceptional progression requires an authorized reason; it must not be a silent bypass. Handle partial/multi-stop delivery, rejection, resubmission, delayed upload and retrospective correction without erasing history.
+- Keep trip execution separate from recognition policy and payment posting. Gate: source preservation, tenant/role/object access, file type/size validation, missing-evidence and stale-transition rejection, concurrency/replay tests, old-trip compatibility and unchanged accounting/invoice snapshots.
+
+## Priority 2 — demand-side shipper portal and load posting
+
+Separate shipper entry/navigation and explicit shipper capabilities, while reusing secure authentication rather than duplicating credential stores. Current single-membership data structures require an explicit, tested migration design before multi-business identity or cross-company transactions are enabled.
+
+- Load fields: goods/category, pickup/delivery locality and exact addresses, loading/delivery window, weight and unit, dimensions if needed, truck/body/capacity, proposed price/currency/rate basis (per trip vs per tonne), tax/toll/loading/unloading/detention terms and expiry.
+- Draft → reviewed/published → accepting proposals → awarded/expired/cancelled. Default to a controlled private pilot, not anonymous public publishing. Exact contact/address visibility follows an explicit release policy and consent.
+- A company controls its own posts. Demand users never inherit transporter invoices, supplier costs, payroll, credentials or unrelated records. Existing transport-company logins retain their roles.
+- Gate: shipper/carrier scopes, moderation and visibility policy, unit/rate validation, expiry/timezone handling, deliberate publication/withdrawal, scoped search and no leakage from existing workspaces.
+
+## Priority 3 — bids, award and operational handoff
+
+Transporters submit/withdraw versioned proposals with price basis, inclusions, validity and notes. Shippers compare bids privately. A transporter sees only its own bid; do not expose competitor prices by API, exports or side channels.
+
+Single atomic, explicitly approved award; acknowledgement, change/cancellation and dispute rules; idempotent creation of linked booking/trip snapshots. Share only approved operational/commercial fields across participating companies, never their private ledgers. Prevent self-bids, stale/expired bids, multiple awards and duplicated bookings. A rate proposal is not a payment instruction; no funds are moved or real awards submitted during development QA. Commercial contract acceptance and settlement mechanisms require a documented policy before wider release.
+
+## Priority 4 — KYC and trust foundations (required before an open marketplace)
+
+Consent-based minimum necessary business/authority/vehicle records, private attachments, purpose and retention policy, expiry, reviewer scopes and appeal/correction. Avoid collecting full Aadhaar or unnecessary identity/bank records by default. Do not invent provider APIs or credentials.
+
+Separate self-declared, submitted, manually reviewed and independently/provider-verified states. Manual document inspection never proves government validation, beneficial ownership or regulatory compliance. Government/provider checks need authorized accounts, an official contract and a successful verified integration. No public badges until their exact evidence, scope and expiry are defined. Marketplace safeguards and user policies must be reviewed before public activation.
+
+## Priority 5 — completed-trip truck/transporter ratings
+
+Allow reviews only from an authorized participant in a completed platform transaction, with truck registration, transporter and trip context. Define dimensions (placement, communication, vehicle condition, delivery) rather than an unexplained score. Prevent self-reviews and duplicate/replayed reviews; provide reporting, response, moderation, correction and dispute history. Show sample size and aggregation rules. Distinguish vehicle, driver, broker and transporter responsibility; never use an average rating as KYC proof or an automatic adverse eligibility decision. Do not seed fabricated ratings.
+
+## Continuing foundations
+
+Accountant/view-only and branch/assignment scopes; email verification/recovery; controlled backups/restores; quotation and rate/cost explanation; missing-cost and operational exceptions; credit/TDS/refunds and accounting close; staff/payroll usability and reconciliation; provider-authorized GPS/EWB/FASTag; shared data consistency and user-relevant copy. External-provider blockers do not block independent work.
+
+## Every five-hour run
+
+1. Read current source/diffs, this plan, PROGRESS and relevant boundaries. Resolve remote source/version state before edits; preserve concurrent work.
+2. Research unresolved product choices using dated primary sources; update `docs/research/transport-platforms.md`. Treat vendor claims as vendor claims and distinguish inference from evidence.
+3. Choose one useful, bounded slice with acceptance gates; choose routine product/architecture defaults without repeatedly asking the user. Document material policy/authority prerequisites and leave those features gated.
+4. Implement, test and review tenant/role/object access, accounting integrity, idempotency, stale edits, shared data and desktop/phone UX. Use synthetic local mutation fixtures and remove them before packaging.
+5. Publish only passing, usable increments through Sites, preserving the existing project/audience. No purchases, real bids/awards, money movement, messages outside this chat, real-user role changes, sensitive-document transmission or reset-credit spending without specific authorization.
+6. Update in-app release notes with actual delivered changes and known limitations; update this roadmap and checkpoint exact native-returned version/deployment in PROGRESS after success. Report the release and next milestone in this chat. No fictitious release when nothing shipped.

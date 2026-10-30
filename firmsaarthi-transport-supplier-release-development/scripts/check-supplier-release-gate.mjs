@@ -1,0 +1,17 @@
+import './check-release-gate.mjs';
+import './check-security-gate.mjs';
+import './check-auth-release-gate.mjs';
+import {readFileSync} from 'node:fs';
+import {releaseFingerprint} from './release-fingerprint.mjs';
+import environments from '../config/environments.json' with {type:'json'};
+const evidence=JSON.parse(readFileSync('outputs/supplier-validation.json','utf8'));
+const required=['supplier-onboarding-and-profile','supplier-fleet-and-routes','supplier-consented-discovery','supplier-boundaries-and-conflicts','supplier-lost-result-recovery','supplier-directory-refresh-and-session','supplier-readiness-and-reviewed-consent','supplier-private-data-export','supplier-reviewed-removal','supplier-unfinished-editor-switch'];
+if(evidence.projectId!==environments.staging.projectId||evidence.origin!==environments.staging.origin||evidence.environment!=='staging'||evidence.fingerprint!==releaseFingerprint()||evidence.status!=='passed')throw Error('Matching successful private hosted supplier evidence is required.');
+if(!Number.isFinite(Date.parse(evidence.completedAt))||Date.parse(evidence.completedAt)>Date.now()||Date.now()-Date.parse(evidence.completedAt)>86400000||!evidence.versionId||!evidence.deploymentId)throw Error('Fresh supplier deployment evidence is required.');
+for(const [device,width] of [['desktop',1280],['phone',390]])for(const scenario of required)if(!evidence.results?.some(r=>r.device===device&&r.scenario===scenario&&r.status==='passed'&&r.measuredViewport?.width===width))throw Error(`Missing actual supplier E2E: ${device}/${scenario}`);
+if(evidence.results.some(r=>r.status!=='passed'))throw Error('Any failing, skipped or unfinished supplier check blocks release.');
+const review=JSON.parse(readFileSync('config/supplier-release-review.json','utf8'));
+if(review.ownerApproved!==true||review.approvalDate!=='2026-10-30'||review.reviewedPreviewFingerprint!=='60888685a0db3cd76c08d3030ac36c3853eb54593f94dc204944b10291d397b2'||!review.approvalSource)throw Error('Explicit owner approval of the reviewed Supplier workflow is required.');
+const baseline=JSON.parse(readFileSync('outputs/staging-validation.json','utf8'));
+if(evidence.versionId!==baseline.versionId||evidence.deploymentId!==baseline.deploymentId)throw Error('Supplier and original/authentication checks must use the same staged release.');
+console.log('Supplier, ownership and original hosted gates passed for the owner-authorised release.');
