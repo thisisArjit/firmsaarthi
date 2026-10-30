@@ -46,3 +46,12 @@ Official [Fleetio archive/restore/delete guidance](https://fleetio.helpjuice.com
 Gap matrix: reviewed individual removal accepted on private stage34 after20 exact-source hosted Supplier checks; first stage33 focus failure and stage34 harness timing failure are retained and repaired/retested. Bulk removal, archive/undo, enquiry/abuse and staff permission design remain unbuilt. Original public-release prerequisites remain unchanged.
 
 Private stage33 acceptance found a native keyboard-focus assertion failure; its failed evidence/screenshot are retained. The retained screenshot also showed the modal against the viewport edge. The candidate adds explicit Tab boundary wrapping and modal auto margins; new-source full checks and both hosted viewports must be rerun before acceptance. Native modal support is not a substitute for measuring behavior in this application.
+
+
+### 30 October 2026,10:25 IST review: unfinished record edits
+
+Re-read official [Fleetio Vehicle overview](https://help.fleetio.com/en_US/vehicle-overview), updated 10 March 2026: fleet work is organized around individual vehicle records and explicit editing. Useful job: move between records while correcting capacity and availability. This does not imply that Fleetio implements our exact discard guard or any undocumented draft retention.
+
+[GOV.UK Check answers](https://design-system.service.gov.uk/patterns/check-answers/), reviewed today, recommends preserving/prepopulating information when users change earlier answers. [MDN FormData](https://developer.mozilla.org/en-US/docs/Web/API/FormData) documents reading a form's key/value entries. Adaptation: preserve existing tab-mounted fields, compare to a per-form baseline and ask before a switch would replace unfinished input, including native bad-input state. Explicit discard is separate from saving; no automatic persistence/publication or competitor assets/claims are introduced.
+
+Gap matrix: unfinished-editor switching guard delivered on private stage35 after22 exact-source hosted Supplier checks. A positional-record harness failure was retained and corrected with stable saved-registration locators; all current checks passed fresh. Browser-close/reload draft persistence, per-record draft caching, staff/enquiry/abuse and public signup ownership foundations remain unbuilt or gated.
