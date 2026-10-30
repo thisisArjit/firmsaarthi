@@ -2,7 +2,7 @@
 
 ## Current private staging36 checkpoint — 30 October 2026
 
-Source80c6ae744fb8d0a46c3e770439c09757089a0fb7b, fingerprint99d0453b3e9f148cd3e377cafe2ff7865dc4d0451247c647d31db5d4904f2896. Saved versionappgprj_6ae065554e2c819195306c14a182519e~appgver_61b27ec805688191b091b4d60617dcad; native deploymentappgdep_6ae4489d97b481919af76c5fdabc48d1 succeeded2026-10-30T07:35:14.113884+00:00/runtime29. The existing owner-private staging Site and its isolated DB/BUCKET were retained. Additive0039 is present; applied0038 was not changed. No protected setting, administrator pin, working key, webhook or production deployment was changed.
+Source80c6ae74fb8d0a46c3e770439c09757089a0fb7b, fingerprint99d0453b3e9f148cd3e377cafe2ff7865dc4d0451247c647d31db5d4904f2896. Saved versionappgprj_6ae065554e2c819195306c14a182519e~appgver_61b27ec805688191b091b4d60617dcad; native deploymentappgdep_6ae4489d97b481919af76c5fdabc48d1 succeeded2026-10-30T07:35:14.113884+00:00/runtime29. The existing owner-private staging Site and its isolated DB/BUCKET were retained. Additive0039 is present; applied0038 was not changed. No protected setting, administrator pin, working key, webhook or production deployment was changed.
 
 Final local validation:307 tests passed, one pre-existing production-fixture skip; TypeScript and supported build passed. Matching dependency gate passes with no high/critical and three previously reviewed tooling findings. Earlier local race and test-fixture failures were fixed and rerun; they are not positive hosted evidence.
 
