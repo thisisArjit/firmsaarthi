@@ -1,3 +1,7 @@
+# Sanitized current development source — not a production release
+
+Public Transport48 and Sites6 are unchanged by this backup. See docs/SHARED-ACCOUNT-CHECKPOINT.md for actual private stage39/1 receipts and incomplete release gates. This folder preserves a sanitized source overlay; credentials, hosting/environment identity files, customer/runtime data, outputs and one-off customer migration operators are excluded. It is not a byte-identical deployment archive. Existing other product folders and root history are preserved. GitHub pushes do not deploy.
+
 # Supplier production candidate — private staging36 only
 
 The owner authorised production after all gates. This clearly unpublished overlay is based on the reviewed stage35 source7551152664cb4693263bdc90625cab047321f073: apply the retained firmsaarthi-transport-supplier-development overlay over its documented Transport47/stage27 base first, then these changed files. Stable firmsaarthi-transport remains production47. This folder is not a replacement stable app or automatic deployment.

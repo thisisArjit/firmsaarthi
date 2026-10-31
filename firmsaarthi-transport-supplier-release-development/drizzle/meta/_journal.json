@@ -213,6 +213,13 @@
       "tag": "0036_plan_checkout"
     },
     {
+      "idx": 37,
+      "version": "6",
+      "when": 1793386260631,
+      "tag": "0037_nebulous_rictor",
+      "breakpoints": true
+    },
+    {
       "idx": 38,
       "version": "6",
       "when": 1793296800000,
@@ -231,6 +238,13 @@
       "version": "6",
       "when": 1793417816767,
       "tag": "0040_supplier_sites_bridge",
+      "breakpoints": true
+    },
+    {
+      "idx": 41,
+      "version": "6",
+      "when": 1793424159368,
+      "tag": "0041_shared_account_ownership",
       "breakpoints": true
     }
   ]

@@ -1,0 +1,1 @@
+ALTER TABLE `site_google_flows` ADD `return_to` text DEFAULT '/account' NOT NULL;

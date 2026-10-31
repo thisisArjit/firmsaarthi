@@ -1,0 +1,19 @@
+export const invoiceColumns={date:'Date',cn:'C. No.',route:'Route',truck:'Truck',rate:'Rate',weight:'Weight',freight:'Freight',advance:'Advance'} as const;
+export const invoiceSections=['items','charges','totals','references','bank','notes','signature'] as const;
+export type InvoiceTemplate={kind:'logistrace.invoice-template';version:1;title:string;orientation:'portrait'|'landscape';accent:string;columns:(keyof typeof invoiceColumns)[];labels:Record<string,string>;sections:string[];notes:string;signature:string;showLogo:boolean;showQr:boolean};
+export function defaultInvoiceTemplate():InvoiceTemplate{return {kind:'logistrace.invoice-template',version:1,title:'TAX INVOICE',orientation:'portrait',accent:'#334b63',columns:Object.keys(invoiceColumns) as (keyof typeof invoiceColumns)[],labels:{...invoiceColumns},sections:[...invoiceSections],notes:'',signature:'Authorized signatory',showLogo:true,showQr:true};}
+export function validateInvoiceTemplate(value:unknown):InvoiceTemplate{
+  const fail=(message:string):never=>{throw new Error(message);};
+  if(!value||typeof value!=='object'||Array.isArray(value))return fail('Choose a FirmSaarthi invoice template JSON file.');
+  const v=value as Record<string,unknown>,keys=['kind','version','title','orientation','accent','columns','labels','sections','notes','signature','showLogo','showQr'];
+  if(Object.keys(v).some(k=>!keys.includes(k))||v.kind!=='logistrace.invoice-template'||v.version!==1)return fail('Unsupported invoice template format or version.');
+  const text=(key:string,max:number)=>{if(typeof v[key]!=='string'||String(v[key]).length>max||/[\x00-\x08\x0b-\x1f\x7f]/.test(String(v[key])))return fail('Invalid template '+key+'.');return String(v[key]).trim();};
+  const title=text('title',60),notes=text('notes',600),signature=text('signature',80);if(!title||!signature)return fail('Invoice title and signatory label are required.');
+  if(!['portrait','landscape'].includes(String(v.orientation))||!/^#[0-9a-f]{6}$/i.test(String(v.accent))||typeof v.showLogo!=='boolean'||typeof v.showQr!=='boolean')return fail('Choose a valid page orientation, colour and image settings.');
+  const channels=[1,3,5].map(i=>parseInt(String(v.accent).slice(i,i+2),16)/255).map(c=>c<=.04045?c/12.92:((c+.055)/1.055)**2.4),luminance=channels[0]*.2126+channels[1]*.7152+channels[2]*.0722;if(1.05/(luminance+.05)<4.5)return fail('Choose a darker accent colour for readable invoice text.');
+  if(!Array.isArray(v.columns)||v.columns.length<2||v.columns.length>8||v.columns.some(k=>typeof k!=='string'||!Object.hasOwn(invoiceColumns,k))||new Set(v.columns).size!==v.columns.length||!v.columns.includes('cn')||!v.columns.includes('freight'))return fail('Keep consignment number and freight; choose each supported column once.');
+  if(!Array.isArray(v.sections)||v.sections.length!==invoiceSections.length||new Set(v.sections).size!==invoiceSections.length||v.sections.some(k=>!invoiceSections.includes(k as typeof invoiceSections[number])))return fail('Keep every invoice section once. You can change their order.');
+  if(!v.labels||typeof v.labels!=='object'||Array.isArray(v.labels)||Object.keys(v.labels).some(k=>!Object.hasOwn(invoiceColumns,k)))return fail('Use supported column labels.');
+  const labels:Record<string,string>={};for(const key of Object.keys(invoiceColumns)){const label=(v.labels as Record<string,unknown>)[key];if(typeof label!=='string'||!label.trim()||label.length>28||/[\x00-\x1f\x7f]/.test(label))return fail('Column labels must contain 1–28 characters.');labels[key]=label.trim();}
+  return {kind:'logistrace.invoice-template',version:1,title,notes,signature,orientation:v.orientation as InvoiceTemplate['orientation'],accent:String(v.accent),columns:v.columns as InvoiceTemplate['columns'],labels,sections:v.sections as string[],showLogo:v.showLogo,showQr:v.showQr};
+}

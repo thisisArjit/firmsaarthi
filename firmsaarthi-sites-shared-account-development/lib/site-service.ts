@@ -2,7 +2,7 @@ import { PRICE, DAY, SUPPORT, SiteError, validateBrief, digest, accessState, web
 import { SiteAuth } from './site-auth';
 import {sharedEnabled,sharedCall,mailConfigured,sendMail} from './shared-integrations';
 export type Row = Record<string, any>;
-export type SiteEnv = { DB?: D1Database; BUCKET?: R2Bucket; ADMIN_EMAIL?: string; RAZORPAY_ENABLED?: string; RAZORPAY_KEY_ID?: string; RAZORPAY_KEY_SECRET?: string; RAZORPAY_WEBHOOK_SECRET?: string; RESEND_API_KEY?: string; MAIL_FROM?: string; PUBLIC_URL?: string; GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string; GOOGLE_REDIRECT_URI?: string; AUTOMATION_SECRET?: string; SHARED_INTEGRATIONS_ENABLED?:string; SHARED_INTEGRATIONS_SECRET?:string; SHARED_INTEGRATIONS_URL?:string; FIRMSAARTHI_SSO_ENABLED?:string; APP_ENV?:string };
+export type SiteEnv = { DB?: D1Database; BUCKET?: R2Bucket; ADMIN_EMAIL?: string; RAZORPAY_ENABLED?: string; RAZORPAY_KEY_ID?: string; RAZORPAY_KEY_SECRET?: string; RAZORPAY_WEBHOOK_SECRET?: string; RESEND_API_KEY?: string; MAIL_FROM?: string; PUBLIC_URL?: string; GOOGLE_CLIENT_ID?: string; GOOGLE_CLIENT_SECRET?: string; GOOGLE_REDIRECT_URI?: string; AUTOMATION_SECRET?: string; SHARED_INTEGRATIONS_ENABLED?:string; SHARED_INTEGRATIONS_SECRET?:string; SHARED_INTEGRATIONS_URL?:string; FIRMSAARTHI_SSO_ENABLED?:string; APP_ENV?:string; STAGING_BRIDGE_RELAY_ENABLED?:string };
 export class SiteService {
   constructor(public env: SiteEnv, public request: Request, public transport: typeof fetch = fetch, public clock = () => new Date()) {}
   get db() { if (!this.env.DB) throw new SiteError('The request service is temporarily unavailable.',503); return this.env.DB; }

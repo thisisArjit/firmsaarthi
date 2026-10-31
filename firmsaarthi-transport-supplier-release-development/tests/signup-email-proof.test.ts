@@ -110,7 +110,7 @@ for(const change of ['disabled','credential','membership'])test(`same-intent rec
  }finally{f.sqlite.close();}
 });
 test('new-account policy counts Unicode code points; existing eight-character passwords remain usable',async()=>{
- assert.throws(()=>validateSignupPassword('Eight123'));assert.throws(()=>validateSignupPassword('😀'.repeat(8)));validateSignupPassword('😀'.repeat(15));validateSignupPassword('x'.repeat(15));assert.throws(()=>validateSignupPassword('x'.repeat(129)));
+ validateSignupPassword('Eight123');assert.throws(()=>validateSignupPassword('Seven12'));assert.throws(()=>validateSignupPassword('😀'.repeat(7)));validateSignupPassword('😀'.repeat(8));validateSignupPassword('x'.repeat(8));assert.throws(()=>validateSignupPassword('x'.repeat(129)));
  const f=fixture();try{const auth=new AuthService(f.db);await auth.signup('legacy@synthetic.test','Eight123','Synthetic existing','r');await auth.login('legacy@synthetic.test','Eight123','l');}finally{f.sqlite.close();}
 });
 test('additive enrollment migration preserves populated accounts and does not invent legacy verification',async()=>{

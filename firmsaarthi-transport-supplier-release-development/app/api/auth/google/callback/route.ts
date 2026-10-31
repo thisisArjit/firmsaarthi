@@ -5,6 +5,7 @@ import {supportToken} from '@/lib/platform-service';
 import { sessionCookie } from '@/lib/auth';
 import { GoogleAuth, googleConfig, flowBrowser, flowCookie } from '@/lib/google-auth';
 import {SitesBridge,type BridgeEnv} from '@/lib/sites-bridge';
+import {businessMode} from '@/lib/business-mode';
 export const dynamic='force-dynamic';
 export async function GET(request:Request){
   if((new URL(request.url).searchParams.get('state')||'').startsWith('sites_'))return new SitesBridge(env as BridgeEnv).googleCallback(request);
@@ -18,7 +19,10 @@ export async function GET(request:Request){
     const url=new URL(request.url),auth=new GoogleAuth(env.DB,config),flow=await auth.consume(url.searchParams.get('state')||'',flowBrowser(request.headers.get('cookie')));linking=flow.intent==='link';supplier=flow.business_kind==='supplier';
     if(url.searchParams.has('error'))throw new Error('Cancelled');
     const google=await auth.exchange(url.searchParams.get('code')||'',flow),token=await auth.complete(flow,google,request.headers.get('cookie'));
-    headers.append('Set-Cookie',sessionCookie(token));headers.set('Location',base+(linking?'/account?google=linked':supplier?'/supplier':'/'));return new Response(null,{status:303,headers});
+    const cookie=sessionCookie(token),identity=await auth.auth.user(cookie);
+    if(!identity)throw new Error('Unavailable');
+    supplier=await businessMode(env.DB,identity.userId)==='supplier';
+    headers.append('Set-Cookie',cookie);headers.set('Location',base+(linking?'/account?google=linked':supplier?'/supplier':'/'));return new Response(null,{status:303,headers});
   }catch(error){
     if(error instanceof GoogleAccountClaimRequired&&env.DB){
       const mail=resetEmailConfig(env as any);if(mail){try{const claim=await new GoogleAccountClaim(env.DB,mail.secret,m=>sendResetEmail(mail,m),()=>Date.now(),(env as any).APP_ENV==='staging'?20:70).start(error.target);headers.append('Set-Cookie',claimCookie(claimCookieName(),claim.id+'.'+claim.proof));headers.append('Set-Cookie',claimCookie(claimResetCookieName(),'',0));headers.append('Set-Cookie',claimCookie(claimReadyCookieName(),'',0));headers.set('Location',base+'/account/claim');return new Response(null,{status:303,headers});}catch{/* A stale target never gets a session or an automatic link. */}}

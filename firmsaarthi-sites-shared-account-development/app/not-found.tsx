@@ -1,0 +1,2 @@
+import {Header,Footer} from './components';
+export default function NotFound(){return <><Header/><main className="wrap empty"><h1>This page took a different turn.</h1><p>Return to your account or start a new website brief.</p><div className="inline-actions"><a className="button primary" href="/account">My websites ↗</a><a className="button secondary" href="/">Back home</a></div></main><Footer/></>;}

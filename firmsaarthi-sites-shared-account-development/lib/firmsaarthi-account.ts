@@ -1,7 +1,7 @@
 import type {SiteAuth} from './site-auth';
 import {digest,SiteError} from './site-domain';
 import {sharedCall,sharedEnabled} from './shared-integrations';
-type Principal={issuer:string;userId:string;email:string;credentialVersion:string;sessionHash:string};
+type Principal={issuer:string;userId:string;email:string;credentialVersion:string;sessionHash:string;ownershipVerified:true};
 const token=()=>crypto.randomUUID().replaceAll('-','')+crypto.randomUUID().replaceAll('-','');
 export class FirmSaarthiAccount {
   constructor(public auth:SiteAuth){}
@@ -18,7 +18,7 @@ export class FirmSaarthiAccount {
     if(!/^[a-f0-9]{64}$/.test(state)||!/^[a-f0-9]{64}$/.test(code)||!/^[a-f0-9]{64}$/.test(browser))throw new SiteError('Shared sign-in expired.',401);
     const flow=await this.s.first('DELETE FROM site_account_flows WHERE state_hash=? AND browser_hash=? AND expires_at>? RETURNING state_hash',await digest(state),await digest(browser),this.s.now());if(!flow)throw new SiteError('Shared sign-in expired.',401);
     const p=await sharedCall(this.s.env,{action:'account-exchange',state,code},this.s.transport) as Principal;
-    if(p.issuer!==new URL(this.s.env.SHARED_INTEGRATIONS_URL!).origin||typeof p.userId!=='string'||!p.userId||p.userId.length>255||typeof p.credentialVersion!=='string'||!p.credentialVersion||p.credentialVersion.length>255||typeof p.sessionHash!=='string'||!/^[a-f0-9]{64}$/.test(p.sessionHash))throw new SiteError('Invalid shared account.',401);
+    if(p.ownershipVerified!==true||p.issuer!==new URL(this.s.env.SHARED_INTEGRATIONS_URL!).origin||typeof p.userId!=='string'||!p.userId||p.userId.length>255||typeof p.credentialVersion!=='string'||!p.credentialVersion||p.credentialVersion.length>255||typeof p.sessionHash!=='string'||!/^[a-f0-9]{64}$/.test(p.sessionHash))throw new SiteError('Invalid shared account.',401);
     p.email=this.auth.email(p.email);await this.active(p,p.sessionHash);
     const mapped=await this.s.first('SELECT l.*,u.email FROM site_firmsaarthi_links l JOIN site_users u ON u.id=l.user_id WHERE l.transport_user_id=?',p.userId),current=await this.auth.user();
     if(current&&((mapped&&mapped.user_id!==current.id)||(!mapped&&current.email!==p.email)))throw new SiteError('A different Sites account is open. Sign out before switching accounts.',409);
@@ -42,10 +42,10 @@ export class FirmSaarthiAccount {
     if(result[3].results?.length!==1)throw new SiteError('This account link could not be confirmed. Restart shared sign-in.',409);return p;
   }
   async session(userId:string,sessionHash:string){if(!this.enabled())return;const link=await this.s.first('SELECT * FROM site_firmsaarthi_links WHERE user_id=?',userId);if(!link)return;
-    const session=await this.s.first('SELECT * FROM site_federated_sessions WHERE token_hash=? AND user_id=?',sessionHash,userId);if(!session)throw new SiteError('Sign in to the linked FirmSaarthi account again.',401);
+    const session=await this.s.first('SELECT * FROM site_federated_sessions WHERE token_hash=? AND user_id=?',sessionHash,userId);if(!session)return;
     await this.active({userId:link.transport_user_id,credentialVersion:session.credential_version},session.source_session_hash||undefined);
   }
-  async attach(userId:string,sessionHash:string,sourceSessionHash?:string){if(!this.enabled())return;const link=await this.s.first('SELECT * FROM site_firmsaarthi_links WHERE user_id=?',userId);if(!link)return;
+  async attach(userId:string,sessionHash:string,sourceSessionHash?:string){if(!this.enabled()||!sourceSessionHash)return;const link=await this.s.first('SELECT * FROM site_firmsaarthi_links WHERE user_id=?',userId);if(!link)return;
     await this.active({userId:link.transport_user_id,credentialVersion:link.credential_version},sourceSessionHash);
     await this.s.stmt('INSERT INTO site_federated_sessions(token_hash,user_id,credential_version,source_session_hash) VALUES (?,?,?,?)',sessionHash,userId,link.credential_version,sourceSessionHash||null).run();
   }

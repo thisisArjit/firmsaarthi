@@ -1,0 +1,5 @@
+import {randomBytes,createHmac} from 'node:crypto';
+process.stdout.write('Ready for integration configuration on hidden stdin.\n');
+if(process.stdin.isTTY)process.stdin.setRawMode(true);
+process.stdin.setEncoding('utf8');let input='';
+process.stdin.on('data',async chunk=>{if(chunk.includes('\u0003'))process.exit(1);input+=chunk;if(!input.includes('\n')&&!input.includes('\r'))return;process.stdin.pause();try{const data=JSON.parse(input.trim()),timestamp=String(Date.now()),nonce=randomBytes(32).toString('hex'),body=JSON.stringify({action:'configuration'}),signature=createHmac('sha256',data.secret).update(timestamp+'.'+nonce+'.'+body).digest('hex');const response=await fetch('https://transport.firmsaarthi.com/api/sites-bridge',{method:'POST',headers:{'Content-Type':'application/json','x-fs-timestamp':timestamp,'x-fs-nonce':nonce,'x-fs-signature':signature},body});const result=await response.json();if(!response.ok)throw Error(result.error||'Integration unavailable');process.stdout.write(JSON.stringify(result)+'\n');process.exit(0);}catch(e){process.stderr.write(e.message+'\n');process.exit(1);}});

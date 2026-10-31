@@ -5,6 +5,7 @@ import { SiteAuth } from '@/lib/site-auth';
 import {mailConfigured} from '@/lib/shared-integrations';
 import {FirmSaarthiAccount} from '@/lib/firmsaarthi-account';
 import sharedRelease from '@/lib/shared-account-release.json';
+import {relayEnabled,relayNext,relayResult} from '@/lib/staging-bridge-relay';
 import {boundedJson,boundedForm,boundedBody} from '@/lib/request-body';
 export const dynamic = 'force-dynamic';
 async function handle(request: Request) {
@@ -18,6 +19,12 @@ async function handle(request: Request) {
       if(Number(request.headers.get('content-length')||0)>6*1024*1024) throw new SiteError('The upload is too large.',413);
     }
     let result: unknown;
+    if(p[0]==='staging-bridge'){
+      if(!relayEnabled(service.env)||url.origin!==service.env.PUBLIC_URL)throw new SiteError('Route not found.',404);
+      if(method==='GET'&&p[1]==='next')return Response.json({request:await relayNext(service.env)},{headers:{'Cache-Control':'no-store'}});
+      if(method==='POST'&&p[1]==='result')return Response.json(await relayResult(service.env,await boundedJson(request,150000)),{headers:{'Cache-Control':'no-store'}});
+      throw new SiteError('Route not found.',404);
+    }
     if(method==='GET'&&p.join('/')==='shared-account-release')return Response.json({fingerprint:sharedRelease.fingerprint,environment:service.env.APP_ENV==='staging'?'staging':'production',sharedAccountEnabled:new FirmSaarthiAccount(auth).enabled()},{headers:{'Cache-Control':'no-store'}});
     if(p[0]==='auth') {
       if(method==='GET'&&p[1]==='firmsaarthi'&&p[2]==='start'){

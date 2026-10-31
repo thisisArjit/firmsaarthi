@@ -1,0 +1,1 @@
+ALTER TABLE `site_requests` ADD `instant_starter` integer DEFAULT 0 NOT NULL;

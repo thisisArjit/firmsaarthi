@@ -10,7 +10,7 @@ import {AuthService,cookieName} from '../lib/auth';
 import {TransportService} from '../lib/service';
 
 afterEach(()=>{cleanup();vi.unstubAllGlobals();vi.restoreAllMocks();});
-for(const mode of ['login','signup-empty','signup-named'])test(`Continue with Google creates a separate account from ${mode} and repeat login reuses it`,async()=>{
+for(const mode of ['login','signup-empty','signup-named'])test(`Google ${mode} respects explicit registration and saved account identity`,async()=>{
  const f=await browserFixture();
  try{
   f.setCookie('');
@@ -22,7 +22,7 @@ for(const mode of ['login','signup-empty','signup-named'])test(`Continue with Go
    const localFetch=globalThis.fetch;vi.stubGlobal('fetch',async(input:any,init:any={})=>{if(String(input)==='https://api.resend.com/emails'){mail.push(JSON.parse(init.body));return Response.json({id:'synthetic'});}return localFetch(input,init);});
   }
   const user=userEvent.setup();render(<Login/>);
-  if(mode!=='login')await user.click(screen.getByRole('button',{name:'Create account'}));
+  if(mode!=='login'){await user.click(screen.getByRole('button',{name:'Create account'}));await user.click(screen.getByRole('button',{name:'Transport provider'}));}
   if(mode==='signup-named'){
    await user.type(await screen.findByLabelText('Email address'),'signup-named@continue.test');await user.click(screen.getByRole('button',{name:'Send confirmation code'}));
    await user.type(await screen.findByLabelText('Six-digit code'),mail[0].text.match(/code is (\d{6})/)[1]);await user.click(screen.getByRole('button',{name:'Verify email'}));
@@ -31,13 +31,20 @@ for(const mode of ['login','signup-empty','signup-named'])test(`Continue with Go
   await user.click(await screen.findByRole('button',{name:'Continue with Google'}));
   await waitFor(()=>assert.equal(f.sqlite.prepare('SELECT COUNT(*) n FROM google_flows').get()!.n,1));
   const request=f.calls.find(c=>c.path==='/api/auth/google/start');
-  assert.equal(request!.body.intent,'signup');
+  assert.equal(request!.body.intent,mode==='login'?'login':'signup');
   const name=mode==='signup-named'?'Synthetic Google business':'My business';
   assert.equal(request!.body.businessName,name);
   // Provider verification is tested separately; this exercises the actual UI,
   // start route and transactional completion with a synthetic verified identity.
   const flow=f.sqlite.prepare('SELECT * FROM google_flows').get()!,google=new GoogleAuth(f.db,config),auth=new AuthService(f.db);
   const identity={subject:'synthetic-continue-'+mode,email:mode+'@continue.test'};
+  if(mode==='login'){
+   const before=f.sqlite.prepare('SELECT COUNT(*) n FROM organizations').get()!.n;
+   await assert.rejects(()=>google.complete(flow,identity,null),/No linked account/);
+   assert.equal(f.sqlite.prepare('SELECT COUNT(*) n FROM organizations').get()!.n,before);
+   assert.equal(f.sqlite.prepare('SELECT COUNT(*) n FROM google_identities').get()!.n,0);
+   return;
+  }
   const token=await google.complete(flow,identity,null),account=(await auth.user(`${cookieName()}=${token}`))!;
   const member=await new TransportService(f.db,account).member();assert.equal(member.role,'OWNER');
   assert.equal(f.sqlite.prepare('SELECT name FROM organizations WHERE id=?').get(member.org_id)!.name,name);

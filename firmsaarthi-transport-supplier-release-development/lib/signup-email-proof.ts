@@ -17,7 +17,7 @@ const invalid=()=>new AppError('The code is incorrect or expired. Check it or re
 const token=(v:unknown):v is string=>typeof v==='string'&&/^[a-f0-9]{64}$/.test(v);
 const equal=(a:string,b:string)=>{let n=a.length^b.length;for(let i=0;i<Math.max(a.length,b.length);i++)n|=(a.charCodeAt(i)||0)^(b.charCodeAt(i)||0);return n===0;};
 export function validateSignupPassword(value:unknown):asserts value is string{
- if(typeof value!=='string'||value.length>128||Array.from(value).length<15)throw new AppError('Use a password of 15 to 128 characters.');
+ if(typeof value!=='string'||value.length>128||Array.from(value).length<8)throw new AppError('Use a password of 8 to 128 characters.');
 }
 
 /** Candidate service; production47 is unchanged until the complete hosted gate.

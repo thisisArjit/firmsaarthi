@@ -1,0 +1,10 @@
+'use client';
+import {useEffect,useId,useRef,useState,type ReactNode} from 'react';
+export default function SupplierReviewDialog({title,description,keepLabel,confirmLabel,blocked,onKeep,onConfirm,children}:{title:string;description:string;keepLabel:string;confirmLabel:string;blocked:boolean;onKeep:()=>void;onConfirm:()=>void;children:ReactNode}){
+  const id=useId(),dialog=useRef<HTMLDialogElement>(null),keep=useRef<HTMLButtonElement>(null),submitted=useRef(false),[unavailable,setUnavailable]=useState(false);
+  useEffect(()=>{const element=dialog.current,previous=document.activeElement as HTMLElement|null;if(!element||typeof element.showModal!=='function'){setUnavailable(true);return;}try{element.showModal();keep.current?.focus();}catch{setUnavailable(true);return;}return()=>{if(element.open)element.close();if(previous?.isConnected)previous.focus();};},[]);
+  if(unavailable)return <section className="supplier-status error" role="alert">Your browser could not open this review. Your saved records and unfinished fields have been kept. <button className="supplier-btn secondary" type="button" onClick={onKeep}>{keepLabel}</button></section>;
+  return <dialog ref={dialog} className="supplier-removal-dialog" aria-modal="true" aria-labelledby={id+'-title'} aria-describedby={id+'-description'} onCancel={e=>{e.preventDefault();onKeep();}} onKeyDown={e=>{if(e.key!=='Tab')return;const buttons=Array.from(e.currentTarget.querySelectorAll<HTMLButtonElement>('button:not([disabled])')),first=buttons[0],last=buttons.at(-1);if((e.shiftKey&&document.activeElement===first)||(!e.shiftKey&&document.activeElement===last)||!e.currentTarget.contains(document.activeElement)){e.preventDefault();(e.shiftKey?last:first)?.focus();}}}>
+    <h2 id={id+'-title'}>{title}</h2>{children}<p id={id+'-description'}>{description}</p><div className="supplier-actions"><button ref={keep} className="supplier-btn secondary" type="button" onClick={onKeep}>{keepLabel}</button><button className="supplier-btn danger" type="button" disabled={blocked} onClick={()=>{if(blocked||submitted.current)return;submitted.current=true;onConfirm();}}>{confirmLabel}</button></div>
+  </dialog>;
+}
