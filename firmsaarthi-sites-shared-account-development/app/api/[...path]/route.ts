@@ -87,6 +87,7 @@ async function handle(request: Request) {
       else throw new SiteError('Route not found.',404);
     }
     else if(method==='GET' && p[0]==='assets' && p[1]) return await service.asset(p[1]);
+    else if(method==='GET' && p[0]==='admin' && p[1]==='users') result=await service.adminUsers(url.searchParams);
     else if(method==='GET' && p[0]==='admin') result=await service.adminList();
     else if(method==='POST' && p[0]==='admin' && p[1]==='emails') { await boundedJson(request,2048);service.requireAdmin(); result=await service.flush(); }
     else if(method==='POST' && p[0]==='tasks' && p[1]==='reminders') {
