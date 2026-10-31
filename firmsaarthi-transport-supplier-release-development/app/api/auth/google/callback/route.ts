@@ -4,8 +4,10 @@ import { env } from 'cloudflare:workers';
 import {supportToken} from '@/lib/platform-service';
 import { sessionCookie } from '@/lib/auth';
 import { GoogleAuth, googleConfig, flowBrowser, flowCookie } from '@/lib/google-auth';
+import {SitesBridge,type BridgeEnv} from '@/lib/sites-bridge';
 export const dynamic='force-dynamic';
 export async function GET(request:Request){
+  if((new URL(request.url).searchParams.get('state')||'').startsWith('sites_'))return new SitesBridge(env as BridgeEnv).googleCallback(request);
   if(supportToken(request))return Response.redirect(new URL('/support',request.url),303);
   const config=googleConfig(env),base=config?new URL(config.redirectUri).origin:new URL(request.url).origin;
   let linking=false,supplier=false;

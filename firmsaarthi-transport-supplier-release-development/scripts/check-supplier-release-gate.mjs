@@ -1,3 +1,4 @@
+import './check-supplier-migration-gate.mjs';
 import './check-release-gate.mjs';
 import './check-security-gate.mjs';
 import './check-auth-release-gate.mjs';

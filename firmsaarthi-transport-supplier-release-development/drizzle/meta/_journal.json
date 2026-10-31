@@ -225,6 +225,13 @@
       "when": 1793343115825,
       "tag": "0039_identity_ownership",
       "breakpoints": true
+    },
+    {
+      "idx": 40,
+      "version": "6",
+      "when": 1793417816767,
+      "tag": "0040_supplier_sites_bridge",
+      "breakpoints": true
     }
   ]
 }
