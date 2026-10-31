@@ -1,3 +1,9 @@
+## Approved final Google tests and shared phone checks — 31 October 2026
+
+Owner explicitly approved both isolated tests: thisisarjit@gmail.com desktop and arjit.tiwari.ece14@itbhu.ac.in phone. Both absent password accounts were legitimately created as MEMBER in an empty synthetic workspace; initial staging logins verified, random initial credentials and sessions retained only in helper14914. Preserve exact identities; do not repeat access approval. Actual Google browser flows are being prepared; no completed claim or revocation is yet claimed. User alone enters/confirms/submits a fresh8+ password and explicit consent. Completed firmsaarthi@gmail.com link remains preserved.
+
+Current40 normal CUA shared checks now have six actual partial entries: delivered first-link OTP/consent, returning without another code, and originating Transport logout denial on desktop1280x900 and phone390x844. Phone used an existing synthetic Supplier login; it is not new-signup proof. Both products remain private staging; full negative/shared/auth/baseline/Supplier gates remain incomplete. Native hosting owner context is not ordinary app-user admin-denial proof. No production release.
+
 ## Current verified checkpoint — 31 October 2026, 12:35 IST
 
 Public Transport48 and Sites6 remain unchanged; Supplier/shared-account production release is not complete. Owner production approval and firmsaarthi@gmail.com isolated MEMBER staging approval remain complete. Do not ask again. User requested first-time Transport provider/Truck provider selection, legacy default Transport provider, and an 8-character minimum.

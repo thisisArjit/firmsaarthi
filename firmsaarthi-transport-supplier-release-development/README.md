@@ -1,6 +1,6 @@
 # Sanitized current development source — not a production release
 
-Public Transport48 and Sites6 are unchanged by this backup. See docs/SHARED-ACCOUNT-CHECKPOINT.md for actual private stage39/1 receipts and incomplete release gates. This folder preserves a sanitized source overlay; credentials, hosting/environment identity files, customer/runtime data, outputs and one-off customer migration operators are excluded. It is not a byte-identical deployment archive. Existing other product folders and root history are preserved. GitHub pushes do not deploy.
+Public Transport48 and Sites6 are unchanged by this backup. See docs/SHARED-ACCOUNT-CHECKPOINT.md for actual private stage40/1 receipts and incomplete release gates. This folder preserves a sanitized source overlay; credentials, hosting/environment identity files, customer/runtime data, outputs and one-off customer migration operators are excluded. It is not a byte-identical deployment archive. Existing other product folders and root history are preserved. GitHub pushes do not deploy.
 
 # Supplier production candidate — private staging36 only
 

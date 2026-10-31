@@ -1,4 +1,5 @@
 import {pendingSitesContinuation} from '@/lib/sites-account';
+import {sitesWebsiteEntry} from '@/lib/sites-entry';
 import {businessMode} from '@/lib/business-mode';
 import {redirect} from 'next/navigation';
 import { headers } from 'next/headers';
@@ -13,5 +14,5 @@ export default async function Home() {
   if(!user)return <Login/>;
   const sitesNext=pendingSitesContinuation((await headers()).get('cookie'));if(sitesNext)redirect(sitesNext);
   if(await businessMode(env.DB!,user.userId)==='supplier')redirect('/supplier');
-  return <SubscriptionAccess><TransportDesk sitesSharedAccount={(env as any).FIRMSAARTHI_SSO_ENABLED==='true'} identity={{ email: user.email, name: user.email }} /></SubscriptionAccess>;
+  return <SubscriptionAccess><TransportDesk sitesWebsiteHref={sitesWebsiteEntry(env as any)} identity={{ email: user.email, name: user.email }} /></SubscriptionAccess>;
 }

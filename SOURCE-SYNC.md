@@ -1,3 +1,13 @@
+## Approved final Google tests and shared phone checks — 31 October 2026
+
+Owner explicitly approved both isolated tests: thisisarjit@gmail.com desktop and arjit.tiwari.ece14@itbhu.ac.in phone. Both absent password accounts were legitimately created as MEMBER in an empty synthetic workspace; initial staging logins verified, random initial credentials and sessions retained only in helper14914. Preserve exact identities; do not repeat access approval. Actual Google browser flows are being prepared; no completed claim or revocation is yet claimed. User alone enters/confirms/submits a fresh8+ password and explicit consent. Completed firmsaarthi@gmail.com link remains preserved.
+
+Current40 normal CUA shared checks now have six actual partial entries: delivered first-link OTP/consent, returning without another code, and originating Transport logout denial on desktop1280x900 and phone390x844. Phone used an existing synthetic Supplier login; it is not new-signup proof. Both products remain private staging; full negative/shared/auth/baseline/Supplier gates remain incomplete. Native hosting owner context is not ordinary app-user admin-denial proof. No production release.
+
+# Current private stage40 — production unchanged
+
+Read firmsaarthi-transport-supplier-release-development/docs/SHARED-ACCOUNT-CHECKPOINT.md. Native private Transport40/source297cbbbf7c02790d0d1b92a9fb55c93681dcd7cd/fingerprint88f6051a3303c86791e326eceed29c3ced2be90606c3c82dd93edc937826a405 includes environment-bound private/public Sites entry.335 local tests pass/one pre-existing fixture skip; TypeScript/build/fresh audit pass. Owner completed the original operational staging Google claim on39; same reviewed MEMBER identity is linked and preserved. Normal CUA Edge desktop1280x900 actual first shared link/mail/consent, returning no-code same immutable owner/mapping, and originating Transport logout denial passed as bounded PARTIAL shared evidence. Phone and complete original/auth/Supplier/shared gates remain incomplete. Two headless hosting-gate redirect failures and direct CUA navigation timeouts are retained as failures, not passes. Never copy service tokens across origins; normal native owner-authenticated browser is used for actual HTTP redirects and an in-memory relay for actual signed backend requests. No production release or fixture-login-as-signup claim. All public48/Sites6 and unrelated source/root history are preserved. qa contains source placeholders only, no credentials/cookies/OTP/results/files.
+
 # Current combined release backup — unpublished
 
 ## Current verified checkpoint — 31 October 2026, 12:35 IST
