@@ -270,15 +270,15 @@ export class SiteService {
     const page=Math.max(1,Math.min(100000,Number.parseInt(params.get('page')||'1',10)||1)), pageSize=50, offset=(page-1)*pageSize;
     const cte=`WITH rollup AS (
       SELECT u.id,u.email,u.name,u.created_at,COUNT(r.id) AS website_count,
-        SUM(CASE WHEN r.paid_until IS NOT NULL AND r.paid_until>? THEN 1 ELSE 0 END) AS paid_website_count,
-        SUM(CASE WHEN r.published_at IS NOT NULL AND (r.paid_until IS NULL OR r.paid_until<=?) AND r.trial_ends_at>? THEN 1 ELSE 0 END) AS free_preview_count,
-        SUM(CASE WHEN r.id IS NOT NULL AND ((r.paid_until IS NOT NULL AND r.paid_until<=?) OR (r.paid_until IS NULL AND r.trial_ends_at IS NOT NULL AND r.trial_ends_at<=?)) THEN 1 ELSE 0 END) AS expired_website_count,
+        SUM(CASE WHEN r.status<>'suspended' AND r.paid_until IS NOT NULL AND r.paid_until>? THEN 1 ELSE 0 END) AS paid_website_count,
+        SUM(CASE WHEN r.status<>'suspended' AND r.published_at IS NOT NULL AND (r.paid_until IS NULL OR r.paid_until<=?) AND r.trial_ends_at>? THEN 1 ELSE 0 END) AS free_preview_count,
+        SUM(CASE WHEN r.status<>'suspended' AND r.id IS NOT NULL AND ((r.paid_until IS NOT NULL AND r.paid_until<=?) OR (r.paid_until IS NULL AND r.trial_ends_at IS NOT NULL AND r.trial_ends_at<=?)) THEN 1 ELSE 0 END) AS expired_website_count,
         SUM(CASE WHEN r.status='suspended' THEN 1 ELSE 0 END) AS suspended_website_count,
         MAX(r.created_at) AS last_profile_created_at
       FROM site_users u LEFT JOIN site_requests r ON r.owner_id=u.id GROUP BY u.id
     ), classified AS (
       SELECT *,CASE WHEN paid_website_count>0 THEN 'paid' WHEN free_preview_count>0 THEN 'free_preview'
-        WHEN website_count=0 THEN 'no_website' WHEN expired_website_count>0 THEN 'expired' WHEN suspended_website_count>0 THEN 'suspended' ELSE 'profile_created' END AS account_status
+        WHEN website_count=0 THEN 'no_website' WHEN suspended_website_count>0 THEN 'suspended' WHEN expired_website_count>0 THEN 'expired' ELSE 'profile_created' END AS account_status
       FROM rollup
     )`;
     const timeArgs=[now,now,now,now,now];
@@ -290,7 +290,7 @@ export class SiteService {
       SUM(website_count) AS website_profiles,SUM(free_preview_count) AS free_preview_websites,
       SUM(paid_website_count) AS paid_websites FROM classified`,...timeArgs);
     const where=`WHERE (?='' OR lower(email) LIKE lower(?) OR lower(name) LIKE lower(?)) AND (?='all' OR account_status=?)`;
-    const query=`${cte} SELECT id,email,name,created_at,website_count,paid_website_count,free_preview_count,expired_website_count,suspended_website_count,last_profile_created_at,account_status FROM classified ${where} ORDER BY created_at DESC,id LIMIT ? OFFSET ?`;
+    const query=`${cte} SELECT email,name,created_at,website_count,paid_website_count,free_preview_count,expired_website_count,suspended_website_count,last_profile_created_at,account_status FROM classified ${where} ORDER BY created_at DESC,id LIMIT ? OFFSET ?`;
     const count=await this.first(`${cte} SELECT COUNT(*) AS n FROM classified ${where}`,...timeArgs,search,`%${search}%`,`%${search}%`,status,status);
     const users=await this.rows(query,...timeArgs,search,`%${search}%`,`%${search}%`,status,status,pageSize,offset);
     return {summary,users,page,pageSize,total:count?.n||0,status,search};

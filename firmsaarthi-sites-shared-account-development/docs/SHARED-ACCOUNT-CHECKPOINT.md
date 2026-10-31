@@ -1,3 +1,21 @@
+## Current release state — 31 October 2026, 21:55 IST
+
+The owner requests that all pending Supplier/shared-account work be released as soon as safely possible and asks for Sites admin visibility into registered users and their website/plan status. Public Transport48 and Sites6 remain unchanged. The current Transport40 claims for the approved synthetic identities `thisisarjit@gmail.com` and `arjit.tiwari.ece14@itbhu.ac.in` are complete and preserved; that does not close the original baseline or shared-account gates.
+
+Sites candidate HEAD remains based on native Sites6. Current local shared-account fingerprint is `b71095b991701fb459feb129650c7701b82e44fcdbb2301aecd582c6ec8d418c` after the admin-roster change. On the Sites candidate, `pnpm exec vitest run --pool=forks --maxWorkers=1` passes 42 tests, `pnpm exec tsc --noEmit` passes, and `pnpm run build` passes. These are local-only results; the existing private Sites stage has not received this source, and Sites6 is unchanged. The Sites publishing skill/helper is not exposed in the current session, so no unsupported deployment method was used.
+
+Transport production gate remains blocked by missing full same-source hosted baseline evidence. Security dependency gate passes. Auth, shared-account and Supplier gates inherit that baseline failure, while the migration gate separately requires successful matching production48 migration reconciliation. No Transport/Sites source has been promoted.
+
+## Admin website users view — local candidate, not deployed (31 October 2026)
+
+The owner requested account visibility in the Sites administrator area: who signed up, who has submitted a website profile, and which websites are in free preview, paid, expired or suspended. The existing protected `/admin` page currently lists website requests but not a separate account roster.
+
+The local Sites candidate now adds a read-only **Website users** tab and `/api/admin/users` endpoint. It reports paginated verified Sites accounts, signup time, submitted profile count/latest profile date, and per-account paid/free-preview/expired/suspended website counts. Summary cards distinguish registered accounts, accounts with profiles, websites in free preview, paid websites and accounts with no website yet. Request rows are joined to accounts only by immutable `owner_id`; no email-address ownership inference is used. The endpoint rechecks the existing server-side administrator identity and returns only account name/email/timestamps and aggregate website/plan state; it does not return password hashes, Google subjects, sessions, website briefs, files, private content or payment identifiers. Search, status filters and pagination are included. No database migration or write action was added.
+
+Plan semantics are deliberately explicit: an account signup alone is not a free plan. A free preview is the existing three-day period after publication, with no automatic charge; paid status reflects the existing `paid_until` entitlement. Unpublished submitted website profiles remain “Profile created · not published.” Older requests without an owner ID are not joined by email and remain visible in the existing request queue only.
+
+This is a local source change only. No typecheck, test, build, staging deployment or production deployment has been run for this feature yet. Sites public version6, private Sites stage1, Transport production48 and Transport stage40 remain unchanged. The current shared-account release gates remain blocking; this new UI/API must be included in fresh Sites staging and desktop/phone authorization/data-isolation checks before publication.
+
 ## Approved final Google tests and shared phone checks — 31 October 2026
 
 Owner explicitly approved both isolated tests: thisisarjit@gmail.com desktop and arjit.tiwari.ece14@itbhu.ac.in phone. Both absent password accounts were legitimately created as MEMBER in an empty synthetic workspace; initial staging logins verified, random initial credentials and sessions retained only in helper14914. Preserve exact identities; do not repeat access approval. Actual Google browser flows are being prepared; no completed claim or revocation is yet claimed. User alone enters/confirms/submits a fresh8+ password and explicit consent. Completed firmsaarthi@gmail.com link remains preserved.
