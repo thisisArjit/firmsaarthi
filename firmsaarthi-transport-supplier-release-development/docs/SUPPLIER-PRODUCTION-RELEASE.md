@@ -1,3 +1,7 @@
+## User-requested handoff restart — 31 October 2026, 17:37 IST
+
+User explicitly requested trigger again. Both same approved identities and MEMBER memberships were preserved. The old phone form reported sign-in review changed in another tab; no successful credential change was inferred. Normal fresh Google callbacks plus actually delivered fresh email codes now accepted on source40. New IAB tab11 for thisisarjit@gmail.com measured1280x720; existing Edge1576265388 for arjit.tiwari.ece14@itbhu.ac.in measured390x844. Blank fresh8+ password/confirmation and unchecked explicit consent shown, same synthetic workspace/MEMBER. User alone must submit within5minutes and report workspace opened. Both tabs handed off; no password read/entered/submitted by agent, no recreated grants, no production change. Helper14914 holds earlier credentials/sessions only in memory for subsequent verify-after.
+
 ## Approved final Google tests and shared phone checks — 31 October 2026
 
 Owner explicitly approved both isolated tests: thisisarjit@gmail.com desktop and arjit.tiwari.ece14@itbhu.ac.in phone. Both absent password accounts were legitimately created as MEMBER in an empty synthetic workspace; initial staging logins verified, random initial credentials and sessions retained only in helper14914. Preserve exact identities; do not repeat access approval. Actual Google browser flows are being prepared; no completed claim or revocation is yet claimed. User alone enters/confirms/submits a fresh8+ password and explicit consent. Completed firmsaarthi@gmail.com link remains preserved.
