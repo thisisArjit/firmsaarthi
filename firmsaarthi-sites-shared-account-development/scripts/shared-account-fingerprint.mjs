@@ -1,0 +1,6 @@
+import {createHash} from 'node:crypto';
+import {readFileSync,readdirSync,existsSync,writeFileSync} from 'node:fs';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+export function sharedAccountFingerprint(){const files=[];function walk(dir){for(const e of readdirSync(dir,{withFileTypes:true})){const p=dir+'/'+e.name;if(e.isSymbolicLink())throw Error('Source symlink is not allowed.');if(e.isDirectory())walk(p);else if(p!=='lib/shared-account-release.json')files.push(p);}}for(const p of ['app','lib','db','drizzle','tests','scripts','worker'])walk(p);for(const p of ['package.json','pnpm-lock.yaml','pnpm-workspace.yaml','tsconfig.json','vite.config.ts','vitest.config.ts'])if(existsSync(p))files.push(p);const hash=createHash('sha256');for(const p of files.sort())hash.update(p+'\0'+readFileSync(p,'utf8').replaceAll('\r\n','\n')+'\0');return hash.digest('hex');}
+if(process.argv[1]&&path.resolve(process.argv[1])===fileURLToPath(import.meta.url)){const fingerprint=sharedAccountFingerprint();if(process.argv.includes('--write'))writeFileSync('lib/shared-account-release.json',JSON.stringify({fingerprint})+'\n');console.log(fingerprint);}

@@ -1,3 +1,7 @@
+Latest owner request31October2026: website creation must use the same FirmSaarthi account. Shared Transport→Sites sign-in is now implemented LOCALLY in separate existing-site candidates, not live. One-use browser-bound handoff, immutable central user mapping, first-link mailbox OTP/explicit earlier-Sites-session revocation consent, returning sign-in and central session/account revocation are tested. Actual final local Transport suite211 passed/one pre-existing skip; Sites35 passed; both TypeScript/build pass. No hosted/provider/mail evidence, flag/secret/real-access/deployment change. Read docs/SHARED-ACCOUNT-CHECKPOINT.md in tms-website-redirect-release and firmsaarthi-sites-shared-account. Original audit/auth/hosted gates and Supplier migration reconciliation still block publication.
+
+Current shared-account Supplier fingerprint7b70b2f395e7dc8b5c81b207a5250a2150762f869f6afbc76158608037b29dba supersedes the earlier link-only cdd and combined216 checkpoints. Original privacy/ownership/supplier routing is preserved; targeted SSO/bridge/claim18 passed before adding the final stage-boundary case; Supplier TypeScript passes. No current full Supplier/hosted claim is made.
+
 # Supplier production release — in progress, not published
 
 ## Latest direct request — website creation entry, 31 October2026

@@ -2,8 +2,9 @@ import {AppError} from './service';
 import {digest,randomToken} from './passwords';
 import {authenticSignature,signedHmac,checkoutConfig,type CheckoutEnvironment} from './plan-checkout';
 import {googleConfig,GoogleAuth} from './google-auth';
+import {SitesAccount} from './sites-account';
 type Row=Record<string,any>;
-export type BridgeEnv=CheckoutEnvironment&{DB?:D1Database;SITES_BRIDGE_SECRET?:string;SITES_ORIGIN?:string;GOOGLE_CLIENT_ID?:string;GOOGLE_CLIENT_SECRET?:string;GOOGLE_REDIRECT_URI?:string;RESEND_API_KEY?:string;PASSWORD_RESET_FROM?:string};
+export type BridgeEnv=CheckoutEnvironment&{DB?:D1Database;SITES_BRIDGE_SECRET?:string;SITES_ORIGIN?:string;GOOGLE_CLIENT_ID?:string;GOOGLE_CLIENT_SECRET?:string;GOOGLE_REDIRECT_URI?:string;RESEND_API_KEY?:string;PASSWORD_RESET_FROM?:string;FIRMSAARTHI_SSO_ENABLED?:string};
 export class SitesBridge {
   constructor(public env:BridgeEnv,public fetcher:typeof fetch=fetch,public clock=()=>new Date()){}
   q(sql:string,...args:any[]){if(!this.env.DB)throw new AppError('Unavailable.',503);return this.env.DB.prepare(sql).bind(...args);}
@@ -37,6 +38,9 @@ export class SitesBridge {
     throw new AppError('Unsupported provider operation.');
   }
   async action(data:Row):Promise<Row>{
+    if(data.action==='account-start')return new SitesAccount(this.env,this.clock).start(data.state);
+    if(data.action==='account-exchange')return new SitesAccount(this.env,this.clock).exchange(data.state,data.code);
+    if(data.action==='account-active')return new SitesAccount(this.env,this.clock).active(data.userId,data.credentialVersion,data.sessionHash);
     if(data.action==='configuration'){const p=checkoutConfig(this.env);return {google:!!googleConfig(this.env),email:!!this.env.RESEND_API_KEY&&!!this.env.PASSWORD_RESET_FROM,payments:!!p,keyId:p?.keyId||null};}
     if(data.action==='payment')return this.payment(data.path,data.body);
     if(data.action==='verify-checkout'){const config=checkoutConfig(this.env);if(!config||!await this.q('SELECT receipt FROM sites_bridge_orders WHERE provider_id=?',data.orderId||'').first())throw new AppError('Website payment not found.',404);return {valid:await authenticSignature(config.secret,data.orderId+'|'+data.paymentId,data.signature)};}

@@ -1,3 +1,4 @@
+import './check-shared-account-gate.mjs';
 import './check-supplier-migration-gate.mjs';
 import './check-release-gate.mjs';
 import './check-security-gate.mjs';
