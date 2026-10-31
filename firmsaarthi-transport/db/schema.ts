@@ -1,5 +1,11 @@
 import { sqliteTable, text, integer, uniqueIndex, index, check } from 'drizzle-orm/sqlite-core';
 import { sql } from 'drizzle-orm';
+export const sitesBridgeNonces=sqliteTable('sites_bridge_nonces',{id:text('id').primaryKey(),expiresAt:text('expires_at').notNull()});
+export const sitesBridgeOrders=sqliteTable('sites_bridge_orders',{receipt:text('receipt').primaryKey(),requestId:text('request_id').notNull(),providerId:text('provider_id').unique(),paymentId:text('payment_id'),createdAt:text('created_at').notNull()});
+export const sitesBridgeGoogle=sqliteTable('sites_bridge_google',{
+  state:text('state').primaryKey(),ticketHash:text('ticket_hash').notNull().unique(),siteState:text('site_state').notNull(),nonce:text('nonce').notNull(),verifier:text('verifier').notNull(),phase:text('phase').notNull(),
+  browserHash:text('browser_hash'),resultHash:text('result_hash').unique(),subject:text('subject'),email:text('email'),expiresAt:text('expires_at').notNull(),
+});
 export const organizations = sqliteTable('organizations', {
   id: text('id').primaryKey(), ownerId: text('owner_id').notNull(), name: text('name').notNull(),
   profile: text('profile').notNull().default('{}'), createdAt: text('created_at').notNull(),

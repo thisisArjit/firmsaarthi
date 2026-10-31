@@ -211,6 +211,13 @@
       "when": 1793156400000,
       "version": "6",
       "tag": "0036_plan_checkout"
+    },
+    {
+      "idx": 37,
+      "version": "6",
+      "when": 1793386260631,
+      "tag": "0037_nebulous_rictor",
+      "breakpoints": true
     }
   ]
 }
