@@ -1,0 +1,3 @@
+# Unpublished website-entry redirect overlay
+
+Apply over native Transport production48 commit be900da6281d42280d87ccc44c97d6bd215da68e. This is a bounded source overlay, not a deployable standalone app or production release. Website creation entry opens https://sites.firmsaarthi.com in a new tab. No data/role/API/schema change. Source/input fingerprint21850662e882c4862040e24df6e7ac01951a04abbb223bb8641d815837aac605; TypeScript,11 existing tests/build pass. Required fresh security and hosted gates remain blocked. Read docs/WEBSITE-REDIRECT-CHECKPOINT.md. Stable published48 and separate Supplier development are preserved; no automatic deployment.

@@ -1,0 +1,7 @@
+# Owner-requested website entry redirect — local, not released
+
+31 October2026: Settings → Company website opens https://sites.firmsaarthi.com in a new tab via a normal noopener noreferrer link. No identity/session data is sent in URL/referrer, no account/role transfer or company-page migration is implied, and unfinished Transport forms remain mounted. Existing company pages/drafts/APIs stay intact. Desktop/phone tab styling includes44px target.
+
+The bounded production48-based candidate is separate at ../tms-website-redirect-release, fingerprint21850662e882c4862040e24df6e7ac01951a04abbb223bb8641d815837aac605. It passes TypeScript and11 existing company-website/bridge tests, but required fresh dependency audit and missing same-source hosted evidence block publication. No deployment has occurred. Read its docs/WEBSITE-REDIRECT-CHECKPOINT.md. Do not publish Supplier merely to deliver this link change.
+
+The same two source edits are deliberately retained in Supplier release-development to prevent later regression. Updated local Supplier fingerprintcdd8555be96b0f8a207bd99eb80313961d7c31559e5d17bc3699beebeb6e9390 supersedes216; prior local/hosted evidence is historical. Migration reconciliation, fresh dependency audit and original/Supplier/auth hosted gates remain unfulfilled; user password handoff stays pending with existing access approval complete. No repeated approval/password entry by agent, provider/key change, production/staging mutation or unrelated product change.

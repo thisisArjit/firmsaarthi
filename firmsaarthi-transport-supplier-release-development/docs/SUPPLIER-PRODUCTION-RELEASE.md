@@ -1,5 +1,11 @@
 # Supplier production release — in progress, not published
 
+## Latest direct request — website creation entry, 31 October2026
+
+Owner requested Transport's website creation entry to open https://sites.firmsaarthi.com. A separate production48-based candidate at ../tms-website-redirect-release changes only Settings → Company website to a normal new-tab link and matching responsive tab styles. TypeScript,11 existing website/bridge tests and supported build pass; fresh audit fails the existing new minimatch advisory and original gate rejects missing current-source hosted baseline, so it is NOT published. No staging/production/settings/data change. Read docs/WEBSITE-REDIRECT-CHECKPOINT.md in both checkouts. Keep this bounded update separate; do not ship Supplier to deliver it.
+
+Matching navigation/style edits are retained in this Supplier candidate to prevent future regression. Current local Supplier fingerprint is cdd8555be96b0f8a207bd99eb80313961d7c31559e5d17bc3699beebeb6e9390. Prior216/99d evidence remains historical; it does not certify this edited source. Existing migration/dependency/ownership/hosted blockers and completed access approval remain unchanged. Bounded redirect fingerprint21850662e882c4862040e24df6e7ac01951a04abbb223bb8641d815837aac605 is separate from Supplier and actual published48.
+
 ## Local Supplier/Sites integration — 31 October2026, not hosted or released
 
 The active Supplier release checkout now selectively merges native production48 bridge code from be900da6281d42280d87ccc44c97d6bd215da68e: signed Sites routes/service and five bridge tests, plus shared Google callback dispatch, website-payment webhook routing and schema. Existing Supplier mailbox-ownership/legacy-claim paths remain. Candidate fingerprint 21685714b4159f61e1dce8ccf996b1c4fdf1f31b6a5f2602f2ac0b953adaffab; this dirty local source has no native saved version/deployment. Stage36 and production48 remain unchanged. Old99d hosted/payment results are historical, not reusable for this source. Supplier release-note ID is now supplier-release-candidate rather than claiming already occupied production48.
@@ -13,7 +19,6 @@ Validation:315 local tests passed, one pre-existing production fixture skipped (
 **Fresh security gate FAILED:** pnpm audit now reports GHSA-g3hv-75wg-m249 (minimatch, moderate), not in the existing reviewed policy; audit totals0 high/critical,3 moderate,1 low. The prior three reviewed findings do not waive this fourth advisory. Official maintainer advisory https://github.com/advisories/GHSA-g3hv-75wg-m249 (reviewed31October2026) reports pattern preprocessing amplification and patched11.0.1. Current transitive paths include ExcelJS/archiver/glob (minimatch3.1.5/5.1.9) and lint/type tooling10.2.6; some consumers expect older callable API. No blanket breaking-major override, fabricated passing audit or silent allowlist addition was made. Next evaluate compatible upstream remediation or a precisely documented reachability review under unchanged policy, then rerun fresh audit/checks. outputs/security-audit-current.json retains actual failure inputs locally; old security-validation is stale for this fingerprint.
 
 The isolated operational-Google staging access approval remains complete. User fresh-password/consent handoff is pending; no repeated approval, password entry/submission by agent, silent reset/revoke/unlink or timer email. Existing issued Test payment history is preserved. Next finish safe migration/dependency reconciliation, private stage and full same-source hosted gates, then owner-authorised production promotion. No extra product/enquiry/staff work.
-
 
 
 ## Native production48 discovered — preserve the separately authorised Sites bridge
